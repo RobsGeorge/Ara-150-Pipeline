@@ -145,6 +145,8 @@ If you use Ara-150 or AraForge in your research, please cite:
                and Reproducible Processing Pipeline for Text-to-Speech Research},
   journal   = {Language Resources and Evaluation},
   year      = {2026},
+  doi       = {10.5281/zenodo.20452226},
+  url       = {https://doi.org/10.5281/zenodo.20452226}
   note      = {In submission. Dataset: https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS}
 }
 
@@ -154,6 +156,8 @@ If you use Ara-150 or AraForge in your research, please cite:
                Grapheme-to-Phoneme Conversion},
   journal   = {Arabian Journal for Science and Engineering},
   year      = {2026},
+  doi       = {10.5281/zenodo.20452142},
+  url       = {https://doi.org/10.5281/zenodo.20452142}
   note      = {In submission}
 }
 ```
