@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.env
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data — never commit these to the public repo
+*.csv
+*.wav
+*.mp3
+*.flac
+audio/
+data/
+PRIVATE_speaker_mapping.csv
+*speaker_mapping*.csv
+*_mapping_private*
+
+# Secrets
+*.pem
+*.key
+.env
+.secrets
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
