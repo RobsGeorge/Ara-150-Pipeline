@@ -1,0 +1,29 @@
+# AraForge pipeline — Python requirements
+# Python >= 3.8
+
+# Core
+numpy>=1.21.0
+pandas>=1.3.0
+openpyxl>=3.0.9
+
+# Audio processing
+torch>=1.13.0
+torchaudio>=0.13.0
+librosa>=0.9.0
+
+# Transcription
+openai-whisper>=20230314
+
+# Speaker diarization / clustering
+speechbrain>=0.5.14
+
+# Source separation (Notebook 01)
+demucs>=4.0.0
+
+# Hugging Face utilities
+huggingface_hub>=0.12.0
+datasets>=2.9.0
+
+# Optional: diacritization for full-IPA output
+# camel-tools>=1.5.0     # pip install camel-tools; then: camel_data -i disambig-mle-calima-msa-r13
+# mishkal>=0.9            # pip install mishkal
