@@ -129,7 +129,7 @@ Or download metadata only:
 ```python
 from huggingface_hub import hf_hub_download
 path = hf_hub_download(repo_id="robsgeorge/Ara_150_Multi_Dialect_TTS",
-                       filename="metadata.csv", repo_type="dataset")
+                       filename="master_metadata.csv", repo_type="dataset")
 ```
 
 ---
