@@ -1,0 +1,41 @@
+Dialect,Measure,Item,Correct,Applicable,Accuracy (%)
+EGY,MRC (per occurrence),ج -> /ɡ/,4814,4814,100.00
+EGY,MRC (per occurrence),ث -> /t/,947,947,100.00
+EGY,MRC (per occurrence),ذ -> /d/,659,659,100.00
+EGY,MRC (per occurrence),ظ -> /zˤ/,595,595,100.00
+EGY,MRC (per occurrence),ق -> /ʔ/,7026,7026,100.00
+EGY,MRC (per occurrence),all markers,14041,14041,100.00
+EGY,Sun-letter assimilation,ال + sun,4869,4869,100.00
+EGY,Moon-letter control,ال + moon,7342,7342,100.00
+EGY,Diagnostic (not scored),proclitic + ال + sun,,679,
+EGY,Diagnostic (not scored),لل + sun,,145,
+GLF,MRC (per occurrence),ج -> /dʒ/,1231,1231,100.00
+GLF,MRC (per occurrence),ث -> /θ/,483,483,100.00
+GLF,MRC (per occurrence),ذ -> /ð/,823,823,100.00
+GLF,MRC (per occurrence),ظ -> /ðˤ/,171,171,100.00
+GLF,MRC (per occurrence),ق -> /ɡ/,2107,2107,100.00
+GLF,MRC (per occurrence),all markers,4815,4815,100.00
+GLF,Sun-letter assimilation,ال + sun,1327,1327,100.00
+GLF,Moon-letter control,ال + moon,2022,2022,100.00
+GLF,Diagnostic (not scored),proclitic + ال + sun,,181,
+GLF,Diagnostic (not scored),لل + sun,,25,
+LEV,MRC (per occurrence),ج -> /ʒ/,1027,1027,100.00
+LEV,MRC (per occurrence),ث -> /t/,383,383,100.00
+LEV,MRC (per occurrence),ذ -> /d/,487,487,100.00
+LEV,MRC (per occurrence),ظ -> /zˤ/,166,166,100.00
+LEV,MRC (per occurrence),ق -> /ʔ/,1659,1659,100.00
+LEV,MRC (per occurrence),all markers,3722,3722,100.00
+LEV,Sun-letter assimilation,ال + sun,1211,1211,100.00
+LEV,Moon-letter control,ال + moon,1587,1587,100.00
+LEV,Diagnostic (not scored),proclitic + ال + sun,,148,
+LEV,Diagnostic (not scored),لل + sun,,38,
+MSA,MRC (per occurrence),ج -> /dʒ/,926,926,100.00
+MSA,MRC (per occurrence),ث -> /θ/,372,372,100.00
+MSA,MRC (per occurrence),ذ -> /ð/,867,867,100.00
+MSA,MRC (per occurrence),ظ -> /ðˤ/,210,210,100.00
+MSA,MRC (per occurrence),ق -> /q/,1534,1534,100.00
+MSA,MRC (per occurrence),all markers,3909,3909,100.00
+MSA,Sun-letter assimilation,ال + sun,942,942,100.00
+MSA,Moon-letter control,ال + moon,1308,1308,100.00
+MSA,Diagnostic (not scored),proclitic + ال + sun,,100,
+MSA,Diagnostic (not scored),لل + sun,,18,
