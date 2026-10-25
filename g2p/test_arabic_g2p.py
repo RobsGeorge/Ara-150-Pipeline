@@ -39,7 +39,7 @@ results.append(t("آمن","Modern Standard Arabic (MSA)", must_contain="ʔaː"))
 
 print("\n== 5. Bare alif: word-initial /ʔ/ onset, medial /aː/ ==")
 results.append(t("اسم","Egyptian", must_contain="ʔ", must_not_contain="aːsm"))  # initial -> glottal
-results.append(t("قال","Khaliji Arabic", must_equal="/gaːl/"))           # medial -> long aː
+results.append(t("قال","Khaliji Arabic", must_equal="/ɡaːl/"))           # medial -> long aː
 results.append(t("قال","Levantine Arabic", must_equal="/ʔaːl/"))
 results.append(t("باب","Modern Standard Arabic (MSA)", must_contain="aː"))
 
@@ -47,7 +47,7 @@ print("\n== 6. Dialect consonant shifts ==")
 results.append(t("جميل","Egyptian", must_contain="ɡ"))                   # ج -> g
 results.append(t("جميل","Levantine Arabic", must_contain="ʒ"))           # ج -> ʒ
 results.append(t("جميل","Khaliji Arabic", must_contain="dʒ"))            # ج -> dʒ
-results.append(t("قلب","Khaliji Arabic", must_contain="g"))              # ق -> g
+results.append(t("قلب","Khaliji Arabic", must_contain="ɡ"))              # ق -> g
 results.append(t("قلب","Modern Standard Arabic (MSA)", must_contain="q"))# ق -> q
 results.append(t("ثوم","Khaliji Arabic", must_contain="θ"))              # ث preserved
 results.append(t("ثوم","Egyptian", must_contain="t"))                    # ث -> t
@@ -70,6 +70,24 @@ print("\n== 10. Sun/Moon partition sanity ==")
 canonical_moon=set("ءبجحخعغفقكمهوي"); results.append(("PARTITION", len(SUN_LETTERS)==14 and canonical_moon.issubset(MOON_LETTERS) and not (SUN_LETTERS & MOON_LETTERS)))
 print(f"  [{'PASS' if results[-1][1] else 'FAIL'}] 14 sun letters, disjoint from moon (sun={len(SUN_LETTERS)})")
 results[-1]=results[-1][1]
+
+print("\n== 11. IPA symbol hygiene: voiced velar plosive is U+0261 everywhere ==")
+for w,d in [("قال","Khaliji Arabic"),("قلب","Khaliji Arabic"),("جميل","Egyptian")]:
+    results.append(t(w,d, must_contain="\u0261", must_not_contain="g"))
+
+print("\n== 12. Written shadda on an assimilated sun letter is absorbed (no triple / duplicated prefix) ==")
+results.append(t("الشَّمْسُ","Modern Standard Arabic (MSA)", must_equal="/a-ʃʃamsu/"))
+results.append(t("السّرية","Egyptian", must_equal="/e-ssɾja/"))
+results.append(t("اللَّيْلُ","Egyptian", must_contain="e-ll", must_not_contain="lll"))
+
+print("\n== 13. Provenance alignment: each unit traces to its source grapheme ==")
+from arabic_g2p_rules import transcribe_word_aligned, ARTICLE
+al = transcribe_word_aligned("الشمس","Egyptian")
+ok = al[0]==("e-",ARTICLE) and al[1:3]==[("ʃ",2),("ʃ",2)] and "".join(u for u,_ in al)=="e-ʃʃms"
+results.append(ok); print(f"  [{'PASS' if ok else 'FAIL'}] الشمس aligned -> {al}")
+al = transcribe_word_aligned("الظلام","Khaliji Arabic")
+ok = [u for u,s in al if s==2]==["ðˤ","ðˤ"]
+results.append(ok); print(f"  [{'PASS' if ok else 'FAIL'}] الظلام: ظ realized only as /ðˤ/ -> {al}")
 
 passed=sum(1 for r in results if r); total=len(results)
 print(f"\n==== {passed}/{total} tests passed ====")
