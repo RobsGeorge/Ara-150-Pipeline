@@ -89,6 +89,24 @@ al = transcribe_word_aligned("الظلام","Khaliji Arabic")
 ok = [u for u,s in al if s==2]==["ðˤ","ðˤ"]
 results.append(ok); print(f"  [{'PASS' if ok else 'FAIL'}] الظلام: ظ realized only as /ðˤ/ -> {al}")
 
+print("\n== 14. v1.3: normalization, Alif maqṣūra, tanwīn, Tāʾ Marbūṭa, long vowels ==")
+M, E, L = "Modern Standard Arabic (MSA)", "Egyptian", "Levantine Arabic"
+results.append(t("على", M, must_equal="/ʕlaː/"))                        # Alif maqṣūra -> /aː/
+results.append(t("الى", E, must_equal="/ʔlaː/"))                        # unhamzated preposition is not an article
+results.append(t("الارض", E, must_equal="/el-ʔɾdˤ/"))                   # Alif after the article -> glottal onset
+results.append(t('"الصين"،', E, must_equal="/e-sˤsˤjn/"))               # boundary punctuation stripped before the article rule
+results.append(t("الـشمس", E, must_equal="/e-ʃʃms/"))                    # Tatweel removed
+results.append(t("جدًا", E, must_equal="/ɡdan/"))                       # tanwīn before Alif: Alif silent
+results.append(t("جداً", E, must_equal="/ɡdan/"))                       # tanwīn on Alif
+results.append(t("مَدْرَسَةٌ", M, must_equal="/madrasatun/"))            # vocalized Tāʾ Marbūṭa -> /t/
+results.append(t("جَمِيل", M, must_equal="/dʒamiːl/"))                  # kasra + Yāʾ -> /iː/
+results.append(t("يَقُولُ", M, must_equal="/jaquːlu/"))                 # ḍamma + Wāw -> /uː/
+results.append(t("يَوْم", M, must_equal="/jawm/"))                      # fatḥa + Wāw stays a glide
+results.append(t("إِلَى", M, must_equal="/ʔilaː/"))                     # explicit kasra on hamza-below not doubled
+results.append(t("للشمس", M, must_contain="lil-"))                      # MSA li-l- prefix
+results.append(t("الرجل", E, must_contain="e-rr"))                      # geminate tap is a trill
+results.append(t("وأكيد eventually", L, must_contain="<eng>eventually</eng>"))  # Latin runs shielded
+
 passed=sum(1 for r in results if r); total=len(results)
 print(f"\n==== {passed}/{total} tests passed ====")
 import sys; sys.exit(0 if passed==total else 1)
