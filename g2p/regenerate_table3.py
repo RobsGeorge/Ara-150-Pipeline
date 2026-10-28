@@ -12,7 +12,7 @@ Input CSV columns: Transcript, Main Dialect (Egyptian | Levantine | Khaliji | MS
 
 Three measures are reported, matching Section 6.2:
 
-  (i)  Marker realization consistency (MRC) -- per grapheme OCCURRENCE.
+  (i)  Dialect Marker Accuracy (DMA) -- per grapheme OCCURRENCE.
        Each occurrence of a marker grapheme is checked against the phoneme
        unit(s) the engine produced *from that occurrence* (provenance-aligned),
        using exact unit equality. A substring test on the joined sentence is
@@ -22,14 +22,16 @@ Three measures are reported, matching Section 6.2:
        dialect's sun article prefix followed by exactly two copies of the
        consonant's realization.
        Moon-letter non-assimilation (negative control) -- word-initial ال +
-       moon letter must yield the dialect's moon prefix and a single copy.
+       moon letter (or bare Alif) must yield the dialect's moon prefix and exactly one
+       realization of that letter.
   Diagnostics -- sun-letter environments the engine does not treat as
        articles (proclitic و/ف/ب/ك + ال, and لل + sun). Reported separately;
        they are coverage gaps, not part of (ii).
 
-Reference realizations (φ*) are hard-coded from Table 1 / Table A2 of the
-paper and do not read the engine's lookup table, so a changed rule shows up
-as a miss.
+Reference realizations (markers, sun letters, article prefixes) are hard-coded
+from the paper's tables and do not read the engine's lookup table, so a changed
+rule shows up as a miss. Tokens are normalized exactly as the engine does
+(Tatweel removed, boundary punctuation stripped, Latin-script runs shielded).
 """
 import argparse
 import csv
@@ -37,7 +39,7 @@ import sys
 from collections import defaultdict
 
 from arabic_g2p_rules import (ARTICLE, IPA_RULES, MOON_LETTERS, SUN_LETTERS,
-                              arabic_words, transcribe_word_aligned)
+                              arabic_words, is_article, transcribe_word_aligned)
 
 DIALECT_NORM = {
     "Egyptian": "Egyptian", "EGY": "Egyptian",
@@ -67,14 +69,20 @@ PROCLITICS = set("وفبك")
 ORDER = ["Egyptian", "Khaliji Arabic", "Levantine Arabic", "Modern Standard Arabic (MSA)"]
 
 
-def _consonant_ref(letter, dialect):
-    """Realization of a sun letter, used only to check the *gemination* shape.
-    Marker letters use MARKERS; others use the dialect table (their mapping is
-    not dialect-variable and is not what (ii) evaluates)."""
-    if letter in MARKERS[dialect]:
-        return MARKERS[dialect][letter]
-    ph = IPA_RULES["dialects"][dialect]["letters"].get(letter, {}).get("phoneme", "")
-    return ph.split(" or ")[0].strip("/")
+# Reference realization of each sun letter after assimilation (Table A1), written out
+# here rather than read from the engine. Egyptian /ɾ/ geminates as the trill /rr/.
+_SUN_COMMON = {"ت": "t", "د": "d", "ر": "r", "ز": "z", "س": "s", "ش": "ʃ", "ص": "sˤ",
+               "ض": "dˤ", "ط": "tˤ", "ل": "l", "ن": "n"}
+SUN_REF = {
+    "Egyptian":                     {**_SUN_COMMON, "ث": "t", "ذ": "d", "ظ": "zˤ"},
+    "Levantine Arabic":             {**_SUN_COMMON, "ث": "t", "ذ": "d", "ظ": "zˤ"},
+    "Khaliji Arabic":               {**_SUN_COMMON, "ث": "θ", "ذ": "ð", "ظ": "ðˤ"},
+    "Modern Standard Arabic (MSA)": {**_SUN_COMMON, "ث": "θ", "ذ": "ð", "ظ": "ðˤ"},
+}
+# Letter classes, also written out independently of the engine.
+SUN_CLASS = set("تثدذرزسشصضطظلن")
+MOON_CLASS = set("ءأإآبجحخعغفقكمهوي") | {"ا"}          # bare Alif behaves as a moon environment
+assert all(set(v) == SUN_CLASS for v in SUN_REF.values())
 
 
 def _from(units, idx):
@@ -102,29 +110,29 @@ def score_word(word, dialect, acc):
             else:
                 acc["mrc_fail"][letter].append((word, got))
 
-    # (ii) definite article
-    if len(word) >= 3 and word.startswith("ال"):
+    # (ii) definite article (word-initial ال; moon environments include bare Alif)
+    if is_article(word):
         moon_pre, sun_pre = ARTICLE_REF[dialect]
         art = _from(aligned(), ARTICLE)
         c = word[2]
-        if c in SUN_LETTERS:
-            ref = _consonant_ref(c, dialect)
+        if c in SUN_CLASS:
+            ref = SUN_REF[dialect][c]
             ok = art == [sun_pre] and _from(aligned(), 2) == [ref, ref]
             acc["sun"][1] += 1
             acc["sun"][0] += ok
             if not ok:
                 acc["sun_fail"].append((word, aligned()))
-        elif c in MOON_LETTERS:
-            ok = art == [moon_pre] and len(_from(aligned(), 2)) <= 1
+        elif c in MOON_CLASS:
+            ok = art == [moon_pre] and len(_from(aligned(), 2)) == 1
             acc["moon"][1] += 1
             acc["moon"][0] += ok
             if not ok:
                 acc["moon_fail"].append((word, aligned()))
 
     # diagnostics: sun environments outside the engine's article rule
-    if len(word) >= 4 and word[0] in PROCLITICS and word[1:3] == "ال" and word[3] in SUN_LETTERS:
+    if len(word) >= 4 and word[0] in PROCLITICS and word[1:3] == "ال" and word[3] in SUN_CLASS:
         acc["diag_proclitic"] += 1
-    if len(word) >= 3 and word.startswith("لل") and word[2] in SUN_LETTERS:
+    if len(word) >= 3 and word.startswith("لل") and word[2] in SUN_CLASS:
         acc["diag_lil"] += 1
 
 
@@ -156,9 +164,9 @@ def write_csv(accs, path):
             a, s = accs[d], SHORT[d]
             for letter, ref in MARKERS[d].items():
                 c, n = a["mrc"][letter]
-                w.writerow([s, "MRC (per occurrence)", f"{letter} -> /{ref}/", c, n, pct(c, n)])
+                w.writerow([s, "DMA (per occurrence)", f"{letter} -> /{ref}/", c, n, pct(c, n)])
             tc = sum(v[0] for v in a["mrc"].values()); tn = sum(v[1] for v in a["mrc"].values())
-            w.writerow([s, "MRC (per occurrence)", "all markers", tc, tn, pct(tc, tn)])
+            w.writerow([s, "DMA (per occurrence)", "all markers", tc, tn, pct(tc, tn)])
             w.writerow([s, "Sun-letter assimilation", "ال + sun", *a["sun"], pct(*a["sun"])])
             w.writerow([s, "Moon-letter control", "ال + moon", *a["moon"], pct(*a["moon"])])
             w.writerow([s, "Diagnostic (not scored)", "proclitic + ال + sun", "", a["diag_proclitic"], ""])
@@ -166,14 +174,14 @@ def write_csv(accs, path):
 
 
 def report(accs):
-    print(f"{'Dialect':<5}{'sent.':>7}{'MRC':>20}{'Sun':>20}{'Moon (ctrl)':>20}{'w+ال+sun':>10}{'لل+sun':>8}")
+    print(f"{'Dialect':<5}{'sent.':>7}{'DMA':>20}{'Sun':>20}{'Moon (ctrl)':>20}{'w+ال+sun':>10}{'لل+sun':>8}")
     for d in [x for x in ORDER if x in accs]:
         a = accs[d]
         tc = sum(v[0] for v in a["mrc"].values()); tn = sum(v[1] for v in a["mrc"].values())
         f = lambda c, n: f"{c}/{n} {pct(c, n)}%"
         print(f"{SHORT[d]:<5}{a['sentences']:>7}{f(tc, tn):>20}{f(*a['sun']):>20}"
               f"{f(*a['moon']):>20}{a['diag_proclitic']:>10}{a['diag_lil']:>8}")
-        for label, key in (("MRC", "mrc_fail"), ("sun", "sun_fail"), ("moon", "moon_fail")):
+        for label, key in (("DMA", "mrc_fail"), ("sun", "sun_fail"), ("moon", "moon_fail")):
             fails = a[key] if key != "mrc_fail" else [x for v in a[key].values() for x in v]
             for word, got in fails[:3]:
                 print(f"      {label} miss: {word} -> {got}")
@@ -202,6 +210,21 @@ def self_test():
     ok = trap == [0, 1]
     failures += not ok
     print(f"  [{'PASS' if ok else 'FAIL'}] substring trap ð-inside-ðˤ: sabotaged {trap}")
+    # article rules: a wrong sun prefix and a missing gemination must both be detected
+    egy = IPA_RULES["dialects"]["Egyptian"]["phonological_rules"]["al_prefix_sun"]
+    original = egy["ipa"]; egy["ipa"] = "/el-/"
+    broken = evaluate([("الشمس", "Egyptian")])["Egyptian"]["sun"]
+    egy["ipa"] = original
+    ok = broken == [0, 1]; failures += not ok
+    print(f"  [{'PASS' if ok else 'FAIL'}] sun prefix sabotaged (EGY /el-/): {broken}")
+    import arabic_g2p_rules as eng
+    saved = eng.SUN_LETTERS.copy(); eng.SUN_LETTERS.discard("ش")
+    sun_set = IPA_RULES["dialects"]["Egyptian"]["phonological_rules"]["al_prefix_sun"]
+    saved_spec = sun_set["letters"]; sun_set["letters"] = saved_spec.replace("ش", "")
+    broken = evaluate([("الشمس", "Egyptian")])["Egyptian"]["sun"]
+    sun_set["letters"] = saved_spec; eng.SUN_LETTERS |= saved
+    ok = broken == [0, 1]; failures += not ok
+    print(f"  [{'PASS' if ok else 'FAIL'}] Shīn removed from the sun class: {broken}")
     print(f"\n==== self-test {'PASSED' if not failures else f'FAILED ({failures})'} ====")
     return failures == 0
 
