@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
 [![Dataset License](https://img.shields.io/badge/Corpus-CC--BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-Ara--150-orange)](https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS)
-[![Tests](https://img.shields.io/badge/G2P%20tests-34%2F34%20passing-brightgreen)]()
+[![Tests](https://img.shields.io/badge/G2P%20tests-42%2F42%20passing-brightgreen)]()
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)]()
 
 **Ara-150** is a ~152-hour multi-dialect Arabic speech corpus designed for
@@ -45,10 +45,10 @@ Ara-150-Pipeline/
 │   └── 03_dataset_consolidation.ipynb        # Final merge + quality filtering
 │
 ├── g2p/
-│   ├── arabic_g2p_rules.py      # Core G2P engine (4 dialects, 34-test suite)
+│   ├── arabic_g2p_rules.py      # Core G2P engine (4 dialects, 42-test suite)
 │   ├── test_arabic_g2p.py       # Validation: run `python test_arabic_g2p.py`
 │   ├── diacritize_then_g2p.py   # Full-IPA pipeline (CAMeL Tools / Mishkal)
-│   ├── regenerate_table3.py     # Recompute DMA from any test CSV
+│   ├── regenerate_table3.py     # Recompute marker table from any test CSV
 │   ├── fleiss_kappa.py          # Inter-annotator agreement computation
 │   └── IPA_Phonemes.xlsx        # Machine-readable IPA mapping lexicon (10 sheets)
 │
@@ -87,7 +87,7 @@ Supported dialects: `"Egyptian"` · `"Khaliji Arabic"` · `"Levantine Arabic"` �
 ```bash
 pip install -r requirements.txt
 python g2p/test_arabic_g2p.py
-# ==== 34/34 tests passed ====
+# ==== 42/42 tests passed ====
 ```
 
 ---
@@ -106,13 +106,25 @@ Set `GOOGLE_DRIVE_PATH` at the top of each notebook to your Drive folder.
 
 ---
 
-## Regenerate Table 3 (DMA) from your test split
+## Regenerate the marker-evaluation table from your test split
 
 ```bash
-python g2p/regenerate_table3.py \
+cd g2p
+python regenerate_table3.py --self-test          # sabotages each rule; the scorer must report misses
+python regenerate_table3.py \
     --test-csv path/to/test_split.csv \
-    --output table3_results.csv
+    --output results/table2_regenerated.csv
+python make_table3_rows.py                       # qualitative-comparison rows, emitted from the engine
 ```
+
+The scorer reports, per dialect: marker realization consistency per grapheme
+occurrence (provenance-aligned, exact unit match), sun-letter assimilation, and a
+moon-letter negative control. Output from the released test split (20,606
+sentences; 3 with empty transcripts are skipped) is in `g2p/results/`.
+
+Known coverage gap (reported as a diagnostic, not scored): the definite article is
+only recognised word-initially. Article forms after the proclitics و ف ب ك
+(e.g. والشمس) and the لل form are not assimilated.
 
 ---
 
