@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
 [![Dataset License](https://img.shields.io/badge/Corpus-CC--BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-Ara--150-orange)](https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS)
-[![Tests](https://img.shields.io/badge/G2P%20tests-59%2F59%20passing-brightgreen)]()
+[![Tests](https://img.shields.io/badge/G2P%20tests-67%2F67%20passing-brightgreen)]()
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)]()
 
 **Ara-150** is a ~152-hour multi-dialect Arabic speech corpus designed for
@@ -45,7 +45,7 @@ Ara-150-Pipeline/
 │   └── 03_dataset_consolidation.ipynb        # Final merge + quality filtering
 │
 ├── g2p/
-│   ├── arabic_g2p_rules.py      # Core G2P engine (4 dialects, 59-test suite)
+│   ├── arabic_g2p_rules.py      # Core G2P engine (4 dialects, 67-test suite)
 │   ├── test_arabic_g2p.py       # Validation: run `python test_arabic_g2p.py`
 │   ├── diacritize_then_g2p.py   # Full-IPA pipeline (CAMeL Tools / Mishkal)
 │   ├── regenerate_table3.py     # Recompute marker table from any test CSV
@@ -87,7 +87,7 @@ Supported dialects: `"Egyptian"` · `"Khaliji Arabic"` · `"Levantine Arabic"` �
 ```bash
 pip install -r requirements.txt
 python g2p/test_arabic_g2p.py
-# ==== 59/59 tests passed ====
+# ==== 67/67 tests passed ====
 ```
 
 ---
@@ -110,7 +110,7 @@ Set `GOOGLE_DRIVE_PATH` at the top of each notebook to your Drive folder.
 
 ```bash
 cd g2p
-python test_arabic_g2p.py                        # 59 unit tests
+python test_arabic_g2p.py                        # 67 unit tests
 python regenerate_table3.py --self-test          # sabotages each rule; the scorer must report misses
 python regenerate_table3.py --test-csv data/test_split.csv --output results/table2_regenerated.csv
 python make_table3_rows.py                       # qualitative-comparison rows, emitted from the engine

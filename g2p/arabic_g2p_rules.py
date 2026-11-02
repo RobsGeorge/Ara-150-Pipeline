@@ -25,7 +25,7 @@ def build_rules():
     over = {
         "Egyptian": {},  # base IS Egyptian (Cairene)
         "Levantine Arabic": {"ث":"/t/","ج":"/ʒ/","ذ":"/d/","ق":"/ʔ/","ر":"/r/","ة":"/a/ or /e/"},
-        "Khaliji Arabic":  {"ث":"/θ/","ج":"/dʒ/","ذ":"/ð/","ظ":"/ðˤ/","ق":"/ɡ/","ر":"/r/","ة":"/a/ or /at/"},
+        "Khaliji Arabic":  {"ث":"/θ/","ج":"/dʒ/","ذ":"/ð/","ظ":"/ðˤ/","ض":"/ðˤ/","ق":"/ɡ/","ر":"/r/","ة":"/a/ or /at/"},
         "Modern Standard Arabic (MSA)": {"ث":"/θ/","ج":"/dʒ/","ذ":"/ð/","ظ":"/ðˤ/","ق":"/q/","ر":"/r/","ة":"/a/ or /at/"},
     }
     art = {  # (moon prefix, sun prefix) — narrow transcription from the xlsx
@@ -35,7 +35,7 @@ def build_rules():
         "Modern Standard Arabic (MSA)": ("/al-/","/a-/"),
     }
     lil = {"Egyptian":"/lel-/","Levantine Arabic":"/lil-/","Khaliji Arabic":"/lil-/","Modern Standard Arabic (MSA)":"/lil-/"}
-    short = {"َ":"/a/","ُ":"/u/","ِ":"/i/"}
+    short = {"َ":"/a/","ُ":"/u/","ِ":"/i/","\u0670":"/aː/"}   # U+0670 superscript (dagger) alif
     tanwin = {"ً":"/an/","ٌ":"/un/","ٍ":"/in/"}
     other = {"ْ":"","ّ":"doubled"}
     R={"dialects":{}}
@@ -116,8 +116,19 @@ ALIF, ALIF_MAQSURA, TAA_MARBUTA, HAMZA_BELOW, LAM = "\u0627", "\u0649", "\u0629"
 VOWEL_MARKS = {"\u064E": "a", "\u064F": "u", "\u0650": "i"}
 TANWIN_MARKS = {"\u064B": "an", "\u064C": "un", "\u064D": "in"}
 _ARABIC_LETTER = re.compile(r"[\u0621-\u063A\u0641-\u064A]")
-_DIACRITIC = re.compile(r"[\u064B-\u0652]")
+_DIACRITIC = re.compile(r"[\u064B-\u0652\u0670]")
 _LATIN = re.compile(r"([A-Za-z]+(?:['\u2019-][A-Za-z]+)*)")
+_NUMBER = re.compile(r"([0-9\u0660-\u0669\u06F0-\u06F9]+(?:[.,\u066B\u066C][0-9\u0660-\u0669\u06F0-\u06F9]+)*)")
+
+# Lexical exceptions (bare, undiacritized forms).
+# LONG_A: frequent words whose long /aː/ is not written (superscript alif); value = letter
+# indices after which /aː/ is inserted. ALLAH: the name of God and its proclitic forms,
+# pronounced with a geminate Lām and long /aː/ in every variety, not by the article rule.
+LONG_A = {"هذا": {0}, "هذه": {0}, "ذلك": {0}, "لكن": {0}, "لكنه": {0}, "لكنها": {0},
+          "هؤلاء": {0}, "هكذا": {0}, "الرحمن": {4}, "إله": {1}}
+ALLAH = {"الله": "allaːh", "والله": "wallaːh", "بالله": "billaːh", "لله": "lillaːh",
+         "فالله": "fallaːh", "تالله": "tallaːh"}
+LEXICAL = ARTICLE - 1   # source index for units that come from a lexical exception
 
 # ---------- Stage 1: normalization and lexical shield ----------
 def normalize_token(tok):
@@ -145,10 +156,17 @@ def segment(text):
                     continue
                 if _LATIN.fullmatch(part):
                     yield ("en", part)
-                else:
-                    p = normalize_token(part)
+                    continue
+                for sub in _NUMBER.split(part):
+                    if not sub:
+                        continue
+                    if _NUMBER.fullmatch(sub):
+                        yield ("num", sub)
+                        continue
+                    p = normalize_token(sub)
                     if p:
                         yield ("ar", p)
+                continue
 
 def arabic_words(text):
     """The normalized Arabic tokens of text (shielded spans excluded)."""
@@ -180,6 +198,9 @@ def _consume_diacritics(word, j, n, diacritics, units, absorb_shadda=False):
     if vowel: units.append((vowel, vpos))
     return j
 
+def strip_diacritics(word):
+    return _DIACRITIC.sub("", word)
+
 def is_article(word):
     """Word-initial definite article: ال followed by an Arabic letter other than Alif maqṣūra
     (so that the unhamzated preposition الى is not read as an article)."""
@@ -189,6 +210,10 @@ def is_article(word):
 def transcribe_aligned(word, letters, diacritics, sun_letters, rules):
     """Return the word's realization as a list of (ipa_unit, source_index)."""
     units=[]; i=0; n=len(word)
+    bare = strip_diacritics(word)
+    if bare in ALLAH:
+        return [(ALLAH[bare], LEXICAL)]
+    long_a = LONG_A.get(word, ())                              # undiacritized input only
     if word == ALIF + LAM:                                     # bare article attached to a shielded word (الـAI)
         return [(rules["phonological_rules"]["al_prefix_moon"]["ipa"].strip('/'), ARTICLE)]
     # word-initial للـ
@@ -248,7 +273,10 @@ def transcribe_aligned(word, letters, diacritics, sun_letters, rules):
             if ch==HAMZA_BELOW and nxt=="\u0650":
                 ph="ʔ"                                         # explicit kasra supplies the /i/
             if ph: units.append((ph, i))
-            i=_consume_diacritics(word,i+1,n,diacritics,units); continue
+            k=i
+            i=_consume_diacritics(word,i+1,n,diacritics,units)
+            if k in long_a: units.append(("aː", LEXICAL))     # unwritten long /aː/
+            continue
         i+=1                                                   # unmapped character: discarded
     return units
 
@@ -276,6 +304,8 @@ def transcribe_protected(text, dialect, diacritize=False):
     for kind, tok in segment(text):
         if kind == "en":
             out.append(f"<eng>{tok}</eng>")
+        elif kind == "num":
+            out.append(f"<num>{tok}</num>")
         else:
             p=transcribe_arabic(tok,letters,diacritics,sun,rules)
             if p: out.append(p)
