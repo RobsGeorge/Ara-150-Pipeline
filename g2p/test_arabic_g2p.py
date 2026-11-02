@@ -105,7 +105,8 @@ results.append(t("جَمِيل", M, must_equal="/dʒamiːl/"))                  
 results.append(t("يَقُولُ", M, must_equal="/jaquːlu/"))                 # ḍamma + Wāw -> /uː/
 results.append(t("يَوْم", M, must_equal="/jawm/"))                      # fatḥa + Wāw stays a glide
 results.append(t("إِلَى", M, must_equal="/ʔilaː/"))                     # explicit kasra on hamza-below not doubled
-results.append(t("للشمس", M, must_contain="lil-"))                      # MSA li-l- prefix
+results.append(t("للقمر", M, must_contain="lil-"))                      # MSA li-l- prefix
+results.append(t("للشمس", M, must_equal="/li-ʃʃms/"))                    # li-l + sun letter assimilates
 results.append(t("الرجل", E, must_contain="e-rr"))                      # geminate tap is a trill
 results.append(t("وأكيد eventually", L, must_contain="<eng>eventually</eng>"))  # Latin runs shielded
 
@@ -119,6 +120,39 @@ results.append(t("ذلك", M, must_equal="/ðaːlk/"))
 results.append(t("ذٰلِكَ", M, must_equal="/ðaːlika/"))                  # superscript alif in diacritized input
 results.append(t("الله", E, must_equal="/allaːh/"))                    # name of God: lexical, not the article rule
 results.append(t("والله", L, must_equal="/wallaːh/"))
+
+print("\n== 16. v1.6: proclitic article, tanwīn, plural Alif, Hāʾ suffix, construct state, learned words ==")
+G = "Khaliji Arabic"
+results.append(t("والحلقة", E, must_equal="/wel-ħlʔa/"))                 # proclitic + moon article
+results.append(t("بالساطور", E, must_equal="/be-ssaːtˤwɾ/"))             # proclitic + sun article
+results.append(t("والشمس", M, must_equal="/wa-ʃʃms/"))
+results.append(t("وبالتالي", L, must_equal="/wbɪ-ttaːlj/"))              # و + ب + article
+results.append(t("للثورة", L, must_equal="/li-sswra/"))                  # li-l + sun, learned Thāʾ
+results.append(t("والد", E, must_equal="/waːld/"))                       # not an article (father)
+results.append(t("بالك", E, must_equal="/baːlk/"))                       # not an article (your mind)
+results.append(t("والدي", E, must_equal="/waːldj/"))                     # NOT_ARTICLE lexicon
+results.append(t("جدا", E, must_equal="/ɡdan/"))                         # unmarked tanwīn adverb
+results.append(t("وطبعا", L, must_equal="/wtˤbʕan/"))
+results.append(t("اشتركوا", E, must_equal="/ʔʃtɾkuː/"))                  # plural ـوا: silent Alif
+results.append(t("الهوا", E, must_equal="/el-hwaː/"))                    # definite noun: no plural ending
+results.append(t("عنده", E, must_equal="/ʕndu/"))                        # 3rd-person suffix, Egyptian
+results.append(t("لأنه", L, must_equal="/lʔno/"))                        # 3rd-person suffix, Levantine
+results.append(t("عنده", G, must_equal="/ʕndh/"))                        # Gulf keeps /h/
+results.append(t("كده", E, must_equal="/kda/"))                          # demonstrative: ه spells /a/
+results.append(t("شبه", E, must_equal="/ʃbh/"))                          # root /h/
+results.append(t("معاه", E, must_equal="/mʕaːh/"))                       # after a long vowel: /h/
+results.append(t("الكوره", E, must_equal="/el-kwɾa/"))                   # definite: ه spells Tāʾ Marbūṭa
+results.append(t("كرة السلة", E, must_equal="/kɾet/ /e-ssla/"))          # construct state
+results.append(t("السيارة الجديدة", E, must_equal="/e-ssjaːɾa/ /el-ɡdjda/"))  # definite noun: no construct
+results.append(t("قصة، الناس", E, must_equal="/ʔsˤa/ /e-nnaːs/"))       # punctuation blocks construct
+results.append(t("إذا", L, must_equal="/ʔizaː/"))                        # learned Dhāl -> /z/
+results.append(t("الحادث", E, must_equal="/el-ħaːds/"))                  # learned Thāʾ -> /s/
+results.append(t("ثلاثة", E, must_equal="/tlaːta/"))                     # colloquial Thāʾ stays /t/
+results.append(t("إذا", G, must_equal="/ʔiðaː/"))                        # Gulf unaffected
+results.append(t("الاستثمار", M, must_equal="/al-stθmaːr/"))             # waṣl Alif after the article
+results.append(t("الانسان", E, must_equal="/el-ʔnsaːn/"))                # not a waṣl stem
+results.append(t("مَدْرَسَةِ البَلَدِ", E, must_equal="/madɾaset/ /el-baladi/"))  # diacritized construct, dialect
+results.append(t("لِلوَلَد", E, must_equal="/lel-walad/"))                # vocalized li-l
 
 passed=sum(1 for r in results if r); total=len(results)
 print(f"\n==== {passed}/{total} tests passed ====")

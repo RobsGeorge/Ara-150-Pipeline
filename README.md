@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
 [![Dataset License](https://img.shields.io/badge/Corpus-CC--BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-Ara--150-orange)](https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS)
-[![Tests](https://img.shields.io/badge/G2P%20tests-67%2F67%20passing-brightgreen)]()
+[![Tests](https://img.shields.io/badge/G2P%20tests-98%2F98%20passing-brightgreen)]()
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)]()
 
 **Ara-150** is a ~152-hour multi-dialect Arabic speech corpus designed for
@@ -87,7 +87,7 @@ Supported dialects: `"Egyptian"` · `"Khaliji Arabic"` · `"Levantine Arabic"` �
 ```bash
 pip install -r requirements.txt
 python g2p/test_arabic_g2p.py
-# ==== 67/67 tests passed ====
+# ==== 98/98 tests passed ====
 ```
 
 ---
@@ -110,7 +110,7 @@ Set `GOOGLE_DRIVE_PATH` at the top of each notebook to your Drive folder.
 
 ```bash
 cd g2p
-python test_arabic_g2p.py                        # 67 unit tests
+python test_arabic_g2p.py                        # 98 unit tests
 python regenerate_table3.py --self-test          # sabotages each rule; the scorer must report misses
 python regenerate_table3.py --test-csv data/test_split.csv --output results/table2_regenerated.csv
 python make_table3_rows.py                       # qualitative-comparison rows, emitted from the engine
@@ -130,16 +130,18 @@ The scorer reports, per dialect: Dialect Marker Accuracy per grapheme occurrence
 (provenance-aligned, exact unit match), sun-letter assimilation, and a moon-letter
 negative control. References are hard-coded in the scorer, not read from the engine.
 
-Known coverage gap (reported as a diagnostic, not scored): the definite article is
-only recognised word-initially. Article forms after the proclitics و ف ب ك
-(e.g. والشمس) and the لل form are not assimilated.
+Article environments include the proclitic forms (و ف ب ك + ال, also after a leading
+و/ف, e.g. وبالتالي) and لل; their counts are reported separately. In Egyptian and Levantine,
+Thāʾ and Dhāl in learned words (engine lexicon `LEARNED`, e.g. إذا /iza/, حادث /ħaːdis/)
+are realized /s/ and /z/ by design; those occurrences are counted but not scored.
 
 ## Human evaluation sample
 
 `g2p/human_eval/select_sentences.py` draws the human-evaluation sample (50 sentences per
-dialect, fixed seed, 3-25 words, no Latin script) from the test split, diacritizes it with
-CAMeL Tools, and writes the engine output that the annotators judge to
-`g2p/human_eval/sentences.csv`.
+dialect, fixed seed, 3-25 words, no Latin script) from the test split and writes the
+engine's output on the undiacritized transcript (diacritization disabled) to
+`g2p/human_eval/sentences.csv`. Annotators judge the engine itself: consonants, the
+definite article, and written long vowels.
 
 ## Dataset download
 

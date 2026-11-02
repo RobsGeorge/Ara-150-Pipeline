@@ -24,9 +24,12 @@ Three measures are reported, matching Section 6.2:
        Moon-letter non-assimilation (negative control) -- word-initial ال +
        moon letter (or bare Alif) must yield the dialect's moon prefix and exactly one
        realization of that letter.
-  Diagnostics -- sun-letter environments the engine does not treat as
-       articles (proclitic و/ف/ب/ك + ال, and لل + sun). Reported separately;
-       they are coverage gaps, not part of (ii).
+       Article environments include the proclitic forms (و/ف/ب/ك + ال, also after a
+       leading و/ف: وبال) and لل; their counts are reported separately.
+  Learned words -- in Egyptian and Levantine, Thāʾ and Dhāl in words of the engine's
+       learned-vocabulary lexicon are realized /s/, /z/ by design; these occurrences
+       (and article environments whose first stem letter is one of them) are counted
+       but not scored, since the reference realization differs from Table 1.
 
 Reference realizations (markers, sun letters, article prefixes) are hard-coded
 from the paper's tables and do not read the engine's lookup table, so a changed
@@ -38,8 +41,8 @@ import csv
 import sys
 from collections import defaultdict
 
-from arabic_g2p_rules import (ALLAH, ARTICLE, IPA_RULES, MOON_LETTERS, SUN_LETTERS,
-                              arabic_words, is_article, strip_diacritics, transcribe_word_aligned)
+from arabic_g2p_rules import (ALLAH, ARTICLE, IPA_RULES, MOON_LETTERS, SUN_LETTERS, article_parse,
+                              arabic_words, is_learned, strip_diacritics, transcribe_word_aligned)
 
 DIALECT_NORM = {
     "Egyptian": "Egyptian", "EGY": "Egyptian",
@@ -65,7 +68,16 @@ ARTICLE_REF = {
     "Khaliji Arabic": ("ɪl-", "ɪ-"),
     "Modern Standard Arabic (MSA)": ("al-", "a-"),
 }
-PROCLITICS = set("وفبك")
+# Article prefixes after a proclitic (vowel + l- / vowel + -) and for لل: (moon, sun).
+PROC_REF = {
+    "Egyptian":                     {"و": "we", "ف": "fe", "ب": "be", "ك": "ke"},
+    "Levantine Arabic":             {"و": "wɪ", "ف": "fɪ", "ب": "bɪ", "ك": "kɪ"},
+    "Khaliji Arabic":               {"و": "wɪ", "ف": "fɪ", "ب": "bɪ", "ك": "kɪ"},
+    "Modern Standard Arabic (MSA)": {"و": "wa", "ف": "fa", "ب": "bi", "ك": "ka"},
+}
+LIL_REF = {"Egyptian": ("lel-", "le-"), "Levantine Arabic": ("lil-", "li-"),
+           "Khaliji Arabic": ("lil-", "li-"), "Modern Standard Arabic (MSA)": ("lil-", "li-")}
+LEARNED_DIALECTS = {"Egyptian", "Levantine Arabic"}
 ORDER = ["Egyptian", "Khaliji Arabic", "Levantine Arabic", "Modern Standard Arabic (MSA)"]
 
 
@@ -98,10 +110,16 @@ def score_word(word, dialect, acc):
             units = transcribe_word_aligned(word, dialect)
         return units
 
+    bare = strip_diacritics(word)
+    learned = dialect in LEARNED_DIALECTS and is_learned(bare)
+
     # (i) per-occurrence marker realization
     for letter, ref in MARKERS[dialect].items():
         for k, ch in enumerate(word):
             if ch != letter:
+                continue
+            if learned and letter in "ثذ":
+                acc["learned"] += 1                            # learned word: /s/, /z/ by design
                 continue
             got = _from(aligned(), k)
             acc["mrc"][letter][1] += 1
@@ -110,37 +128,44 @@ def score_word(word, dialect, acc):
             else:
                 acc["mrc_fail"][letter].append((word, got))
 
-    # (ii) definite article (word-initial ال; moon environments include bare Alif).
+    # (ii) definite article: ال, proclitic + ال, لل (moon environments include bare Alif).
     # The name of God (الله and its proclitic forms) is a lexical exception, not scored.
-    if is_article(word) and strip_diacritics(word) not in ALLAH:
-        moon_pre, sun_pre = ARTICLE_REF[dialect]
+    kind, procs, start = article_parse(word)
+    if kind and bare not in ALLAH:
+        c = word[start]
+        if learned and c in "ثذ":
+            acc["learned_art"] += 1
+            return
+        if kind == "article":
+            moon_pre, sun_pre = ARTICLE_REF[dialect]
+        elif kind == "proc":
+            v = PROC_REF[dialect][procs[-1]]
+            moon_pre, sun_pre = v + "l-", v + "-"
+        else:
+            moon_pre, sun_pre = LIL_REF[dialect]
+        acc["kind"][kind] += 1
         art = _from(aligned(), ARTICLE)
-        c = word[2]
         if c in SUN_CLASS:
             ref = SUN_REF[dialect][c]
-            ok = art == [sun_pre] and _from(aligned(), 2) == [ref, ref]
+            ok = art == [sun_pre] and _from(aligned(), start) == [ref, ref]
             acc["sun"][1] += 1
             acc["sun"][0] += ok
             if not ok:
                 acc["sun_fail"].append((word, aligned()))
         elif c in MOON_CLASS:
-            ok = art == [moon_pre] and len(_from(aligned(), 2)) == 1
+            got = _from(aligned(), start)
+            # bare Alif may be a silent waṣl Alif; any other moon letter gives exactly one unit
+            ok = art == [moon_pre] and (len(got) == 1 or (c == "ا" and len(got) <= 1))
             acc["moon"][1] += 1
             acc["moon"][0] += ok
             if not ok:
                 acc["moon_fail"].append((word, aligned()))
 
-    # diagnostics: sun environments outside the engine's article rule
-    if len(word) >= 4 and word[0] in PROCLITICS and word[1:3] == "ال" and word[3] in SUN_CLASS:
-        acc["diag_proclitic"] += 1
-    if len(word) >= 3 and word.startswith("لل") and word[2] in SUN_CLASS:
-        acc["diag_lil"] += 1
-
 
 def new_acc():
     return {"mrc": defaultdict(lambda: [0, 0]), "mrc_fail": defaultdict(list),
             "sun": [0, 0], "sun_fail": [], "moon": [0, 0], "moon_fail": [],
-            "diag_proclitic": 0, "diag_lil": 0, "sentences": 0}
+            "kind": defaultdict(int), "learned": 0, "learned_art": 0, "sentences": 0}
 
 
 def evaluate(rows):
@@ -170,18 +195,20 @@ def write_csv(accs, path):
             w.writerow([s, "DMA (per occurrence)", "all markers", tc, tn, pct(tc, tn)])
             w.writerow([s, "Sun-letter assimilation", "ال + sun", *a["sun"], pct(*a["sun"])])
             w.writerow([s, "Moon-letter control", "ال + moon", *a["moon"], pct(*a["moon"])])
-            w.writerow([s, "Diagnostic (not scored)", "proclitic + ال + sun", "", a["diag_proclitic"], ""])
-            w.writerow([s, "Diagnostic (not scored)", "لل + sun", "", a["diag_lil"], ""])
+            for k, label in (("article", "ال"), ("proc", "proclitic + ال"), ("lil", "لل")):
+                w.writerow([s, "Article environments", label, "", a["kind"][k], ""])
+            w.writerow([s, "Learned words (not scored)", "Thāʾ/Dhāl occurrences", "", a["learned"], ""])
+            w.writerow([s, "Learned words (not scored)", "article environments", "", a["learned_art"], ""])
 
 
 def report(accs):
-    print(f"{'Dialect':<5}{'sent.':>7}{'DMA':>20}{'Sun':>20}{'Moon (ctrl)':>20}{'w+ال+sun':>10}{'لل+sun':>8}")
+    print(f"{'Dialect':<5}{'sent.':>7}{'DMA':>20}{'Sun':>20}{'Moon (ctrl)':>20}{'proc+ال':>9}{'لل':>6}{'learned':>9}")
     for d in [x for x in ORDER if x in accs]:
         a = accs[d]
         tc = sum(v[0] for v in a["mrc"].values()); tn = sum(v[1] for v in a["mrc"].values())
         f = lambda c, n: f"{c}/{n} {pct(c, n)}%"
         print(f"{SHORT[d]:<5}{a['sentences']:>7}{f(tc, tn):>20}{f(*a['sun']):>20}"
-              f"{f(*a['moon']):>20}{a['diag_proclitic']:>10}{a['diag_lil']:>8}")
+              f"{f(*a['moon']):>20}{a['kind']['proc']:>9}{a['kind']['lil']:>6}{a['learned']:>9}")
         for label, key in (("DMA", "mrc_fail"), ("sun", "sun_fail"), ("moon", "moon_fail")):
             fails = a[key] if key != "mrc_fail" else [x for v in a[key].values() for x in v]
             for word, got in fails[:3]:
@@ -190,7 +217,7 @@ def report(accs):
 
 def self_test():
     """Sabotage each marker rule in turn; the scorer must report a miss."""
-    probe = {"ج": "جميل", "ث": "ثلاثة", "ذ": "ذلك", "ظ": "ظلام", "ق": "قال"}
+    probe = {"ج": "جميل", "ث": "ثلاثة", "ذ": "ذهب", "ظ": "ظلام", "ق": "قال"}
     failures = 0
     for d in ORDER:
         letters = IPA_RULES["dialects"][d]["letters"]
@@ -206,7 +233,7 @@ def self_test():
     # substring trap: /ð/ must not be credited by an adjacent /ðˤ/
     kha = IPA_RULES["dialects"]["Khaliji Arabic"]["letters"]
     original = kha["ذ"]; kha["ذ"] = {"phoneme": "/z/"}
-    trap = evaluate([("الظلام ذلك", "Khaliji Arabic")])["Khaliji Arabic"]["mrc"]["ذ"]
+    trap = evaluate([("الظلام ذهب", "Khaliji Arabic")])["Khaliji Arabic"]["mrc"]["ذ"]
     kha["ذ"] = original
     ok = trap == [0, 1]
     failures += not ok
@@ -226,6 +253,18 @@ def self_test():
     sun_set["letters"] = saved_spec; eng.SUN_LETTERS |= saved
     ok = broken == [0, 1]; failures += not ok
     print(f"  [{'PASS' if ok else 'FAIL'}] Shīn removed from the sun class: {broken}")
+    # proclitic article: a wrong proclitic vowel and a missing assimilation after a proclitic
+    pv = IPA_RULES["dialects"]["Egyptian"]["proclitic_vowel"]
+    original = pv["و"]; pv["و"] = "wa"
+    broken = evaluate([("والشمس", "Egyptian")])["Egyptian"]["sun"]
+    pv["و"] = original
+    ok = broken == [0, 1]; failures += not ok
+    print(f"  [{'PASS' if ok else 'FAIL'}] proclitic vowel sabotaged (EGY wa-): {broken}")
+    saved_spec = sun_set["letters"]; sun_set["letters"] = saved_spec.replace("ش", "")
+    broken = evaluate([("بالشمس", "Egyptian")])["Egyptian"]["sun"]
+    sun_set["letters"] = saved_spec
+    ok = broken == [0, 1]; failures += not ok
+    print(f"  [{'PASS' if ok else 'FAIL'}] no assimilation after a proclitic: {broken}")
     print(f"\n==== self-test {'PASSED' if not failures else f'FAILED ({failures})'} ====")
     return failures == 0
 
