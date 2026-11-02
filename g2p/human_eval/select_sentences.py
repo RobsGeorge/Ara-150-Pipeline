@@ -2,11 +2,12 @@
 
 Sample: 50 sentences per dialect (Egyptian, Levantine, Gulf) drawn uniformly at random,
 with a fixed seed, from the held-out test split, among sentences with 3-25 words and no
-Latin-script content. Each sentence is diacritized with the CAMeL Tools MLE disambiguator
-and transcribed by the engine with the sentence's dialect rule set.
+Latin-script content. Each sentence is transcribed by the engine with the sentence's
+dialect rule set, on the undiacritized transcript (diacritization stage disabled), so that
+annotators judge the engine itself: consonants, the definite article, and written long
+vowels.
 
-Requires: pip install camel-tools && camel_data -i disambig-mle-calima-msa-r13
-Usage:    python human_eval/select_sentences.py data/test_split.csv human_eval/sentences.csv
+Usage: python human_eval/select_sentences.py data/test_split.csv human_eval/sentences.csv
 """
 import csv
 import random
@@ -28,13 +29,6 @@ def eligible(text):
 
 
 def main(test_csv, out_csv):
-    from camel_tools.disambig.mle import MLEDisambiguator
-    mle = MLEDisambiguator.pretrained()
-
-    def diacritize(text):
-        return " ".join((d.analyses[0].analysis.get("diac") if d.analyses else None) or d.word
-                        for d in mle.disambiguate(text.split()))
-
     rows = list(csv.DictReader(open(test_csv, encoding="utf-8")))
     rng = random.Random(SEED)
     out = []
@@ -43,9 +37,8 @@ def main(test_csv, out_csv):
                       key=lambda r: int(r["ID"]) if r["ID"].isdigit() else r["ID"])
         for r in rng.sample(pool, PER_DIALECT):
             text = r["Transcript"].strip()
-            diac = diacritize(text)
-            out.append({"ID": r["ID"], "Dialect": tag, "Transcript": text, "Diacritized": diac,
-                        "IPA": transcribe_protected(diac, rule_set)})
+            out.append({"ID": r["ID"], "Dialect": tag, "Transcript": text,
+                        "IPA": transcribe_protected(text, rule_set)})
     with open(out_csv, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(out[0]))
         w.writeheader(); w.writerows(out)
