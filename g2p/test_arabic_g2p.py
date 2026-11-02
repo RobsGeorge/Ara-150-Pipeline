@@ -109,6 +109,17 @@ results.append(t("للشمس", M, must_contain="lil-"))                      # M
 results.append(t("الرجل", E, must_contain="e-rr"))                      # geminate tap is a trill
 results.append(t("وأكيد eventually", L, must_contain="<eng>eventually</eng>"))  # Latin runs shielded
 
+print("\n== 15. v1.5: Gulf Ḍād, numerals, unwritten long ā ==")
+G = "Khaliji Arabic"
+results.append(t("أرض", G, must_equal="/ʔrðˤ/"))                       # Gulf Ḍād merges with Ẓāʾ as /ðˤ/
+results.append(t("أرض", E, must_equal="/ʔɾdˤ/"))                       # other varieties keep /dˤ/
+results.append(t("عمره 15 سنة", E, must_contain="<num>15</num>"))       # numerals shielded, not deleted
+results.append(t("هذا", M, must_equal="/haːðaː/"))                     # unwritten long ā restored
+results.append(t("ذلك", M, must_equal="/ðaːlk/"))
+results.append(t("ذٰلِكَ", M, must_equal="/ðaːlika/"))                  # superscript alif in diacritized input
+results.append(t("الله", E, must_equal="/allaːh/"))                    # name of God: lexical, not the article rule
+results.append(t("والله", L, must_equal="/wallaːh/"))
+
 passed=sum(1 for r in results if r); total=len(results)
 print(f"\n==== {passed}/{total} tests passed ====")
 import sys; sys.exit(0 if passed==total else 1)

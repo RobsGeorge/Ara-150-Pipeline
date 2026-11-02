@@ -38,8 +38,8 @@ import csv
 import sys
 from collections import defaultdict
 
-from arabic_g2p_rules import (ARTICLE, IPA_RULES, MOON_LETTERS, SUN_LETTERS,
-                              arabic_words, is_article, transcribe_word_aligned)
+from arabic_g2p_rules import (ALLAH, ARTICLE, IPA_RULES, MOON_LETTERS, SUN_LETTERS,
+                              arabic_words, is_article, strip_diacritics, transcribe_word_aligned)
 
 DIALECT_NORM = {
     "Egyptian": "Egyptian", "EGY": "Egyptian",
@@ -76,7 +76,7 @@ _SUN_COMMON = {"ت": "t", "د": "d", "ر": "r", "ز": "z", "س": "s", "ش": "ʃ"
 SUN_REF = {
     "Egyptian":                     {**_SUN_COMMON, "ث": "t", "ذ": "d", "ظ": "zˤ"},
     "Levantine Arabic":             {**_SUN_COMMON, "ث": "t", "ذ": "d", "ظ": "zˤ"},
-    "Khaliji Arabic":               {**_SUN_COMMON, "ث": "θ", "ذ": "ð", "ظ": "ðˤ"},
+    "Khaliji Arabic":               {**_SUN_COMMON, "ث": "θ", "ذ": "ð", "ظ": "ðˤ", "ض": "ðˤ"},
     "Modern Standard Arabic (MSA)": {**_SUN_COMMON, "ث": "θ", "ذ": "ð", "ظ": "ðˤ"},
 }
 # Letter classes, also written out independently of the engine.
@@ -110,8 +110,9 @@ def score_word(word, dialect, acc):
             else:
                 acc["mrc_fail"][letter].append((word, got))
 
-    # (ii) definite article (word-initial ال; moon environments include bare Alif)
-    if is_article(word):
+    # (ii) definite article (word-initial ال; moon environments include bare Alif).
+    # The name of God (الله and its proclitic forms) is a lexical exception, not scored.
+    if is_article(word) and strip_diacritics(word) not in ALLAH:
         moon_pre, sun_pre = ARTICLE_REF[dialect]
         art = _from(aligned(), ARTICLE)
         c = word[2]
