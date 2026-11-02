@@ -153,6 +153,20 @@ results.append(t("الاستثمار", M, must_equal="/al-stθmaːr/"))         
 results.append(t("الانسان", E, must_equal="/el-ʔnsaːn/"))                # not a waṣl stem
 results.append(t("مَدْرَسَةِ البَلَدِ", E, must_equal="/madɾaset/ /el-baladi/"))  # diacritized construct, dialect
 results.append(t("لِلوَلَد", E, must_equal="/lel-walad/"))                # vocalized li-l
+results.append(t("ولله", L, must_equal="/walillaːh/"))                   # name of God after و + li-
+results.append(t("واوا", L, must_equal="/waːwaː/"))                      # not a plural ending (Alif before Wāw)
+results.append(t("عِنْدَهُ", E, must_equal="/ʕindahu/"))                  # written vowels: suffix rule not applied
+results.append(t("بِاسْمِ", M, must_equal="/bismi/"))                     # waṣl after a vocalized proclitic
+results.append(t("بده", L, must_equal="/bdo/"))                          # not the demonstrative ده
+results.append(t("والده", E, must_equal="/waːldu/"))                     # his father
+results.append(t("وبالشمس", M, must_equal="/wbi-ʃʃms/"))                 # leading و is a consonant in MSA too
+results.append(t("عادةً الناس", E, must_equal="/ʕaːda/ /e-nnaːs/"))     # written tanwīn: no construct
+results.append(t("قصة اللي", E, must_equal="/ʔsˤa/ /e-llj/"))            # relative pronoun: no construct
+results.append(t("الا", E, must_equal="/ʔlaː/"))                         # الا "except" is not an article
+results.append(t("الاسماك", E, must_equal="/el-ʔsmaːk/"))                # not the waṣl noun اسم
+results.append(t("باسمها", L, must_equal="/bsmhaː/"))                    # waṣl noun with a suffix
+results.append(t("باتمان", E, must_equal="/baːtmaːn/"))                  # not a waṣl stem after a proclitic
+results.append(t("الحمدلله", E, must_equal="/alħamdulillaːh/"))          # lexical
 
 passed=sum(1 for r in results if r); total=len(results)
 print(f"\n==== {passed}/{total} tests passed ====")

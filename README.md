@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
 [![Dataset License](https://img.shields.io/badge/Corpus-CC--BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-Ara--150-orange)](https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS)
-[![Tests](https://img.shields.io/badge/G2P%20tests-98%2F98%20passing-brightgreen)]()
+[![Tests](https://img.shields.io/badge/G2P%20tests-112%2F112%20passing-brightgreen)]()
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)]()
 
 **Ara-150** is a ~152-hour multi-dialect Arabic speech corpus designed for
@@ -87,7 +87,7 @@ Supported dialects: `"Egyptian"` · `"Khaliji Arabic"` · `"Levantine Arabic"` �
 ```bash
 pip install -r requirements.txt
 python g2p/test_arabic_g2p.py
-# ==== 98/98 tests passed ====
+# ==== 112/112 tests passed ====
 ```
 
 ---
@@ -110,7 +110,7 @@ Set `GOOGLE_DRIVE_PATH` at the top of each notebook to your Drive folder.
 
 ```bash
 cd g2p
-python test_arabic_g2p.py                        # 98 unit tests
+python test_arabic_g2p.py                        # 112 unit tests
 python regenerate_table3.py --self-test          # sabotages each rule; the scorer must report misses
 python regenerate_table3.py --test-csv data/test_split.csv --output results/table2_regenerated.csv
 python make_table3_rows.py                       # qualitative-comparison rows, emitted from the engine
@@ -132,13 +132,17 @@ negative control. References are hard-coded in the scorer, not read from the eng
 
 Article environments include the proclitic forms (و ف ب ك + ال, also after a leading
 و/ف, e.g. وبالتالي) and لل; their counts are reported separately. In Egyptian and Levantine,
-Thāʾ and Dhāl in learned words (engine lexicon `LEARNED`, e.g. إذا /iza/, حادث /ħaːdis/)
-are realized /s/ and /z/ by design; those occurrences are counted but not scored.
+Thāʾ and Dhāl in learned words (e.g. إذا /iza/, حادث /ħaːdis/) are scored against /s/ and
+/z/. Which words are learned, which proclitic + ال words are not articles, and which Alifs
+are waṣl Alifs is decided by lists and patterns written into the scorer, independently of
+the engine's lexicons; the self-test shows that a wrong lexicon entry is detected.
 
 ## Human evaluation sample
 
 `g2p/human_eval/select_sentences.py` draws the human-evaluation sample (50 sentences per
-dialect, fixed seed, 3-25 words, no Latin script) from the test split and writes the
+dialect, fixed seed, 3-25 words, no Latin script) from the development split
+(`g2p/data/dev_split.csv`, sanitized like the test split; it played no part in designing
+the rules or the word lexicons) and writes the
 engine's output on the undiacritized transcript (diacritization disabled) to
 `g2p/human_eval/sentences.csv`. Annotators judge the engine itself: consonants, the
 definite article, and written long vowels.

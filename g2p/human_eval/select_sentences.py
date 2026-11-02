@@ -1,13 +1,14 @@
 """Select the human-evaluation sample and produce the engine output the annotators judge.
 
 Sample: 50 sentences per dialect (Egyptian, Levantine, Gulf) drawn uniformly at random,
-with a fixed seed, from the held-out test split, among sentences with 3-25 words and no
-Latin-script content. Each sentence is transcribed by the engine with the sentence's
+with a fixed seed, from the development split, among sentences with 3-25 words and no
+Latin-script content. The development split played no part in designing the rules or the
+lexicons (the annotation guide was piloted on a separate sample from the test split). Each sentence is transcribed by the engine with the sentence's
 dialect rule set, on the undiacritized transcript (diacritization stage disabled), so that
 annotators judge the engine itself: consonants, the definite article, and written long
 vowels.
 
-Usage: python human_eval/select_sentences.py data/test_split.csv human_eval/sentences.csv
+Usage: python human_eval/select_sentences.py data/dev_split.csv human_eval/sentences.csv
 """
 import csv
 import random
