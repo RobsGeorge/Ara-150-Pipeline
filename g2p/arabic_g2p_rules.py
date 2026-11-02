@@ -51,6 +51,9 @@ def build_rules():
                 "al_prefix_sun":{"letters":"".join(SUN_LETTERS),"ipa":art[d][1]},
             },
             "lil_prefix":lil[d],
+            # Tāʾ Marbūṭa surfaces as /t/ before a written case vowel or tanwīn only in MSA;
+            # the dialects are pausal, so case marks on it are ignored.
+            "taa_marbuta_t": d == "Modern Standard Arabic (MSA)",
         }
     return R
 
@@ -219,13 +222,18 @@ def transcribe_aligned(word, letters, diacritics, sun_letters, rules):
             else:
                 units.append(("aː", i))
             i=_consume_diacritics(word,i+1,n,diacritics,units); continue
-        # Tāʾ Marbūṭa: pausal /a/; /t/ surfaces when a vowel or tanwīn is written on it
+        # Tāʾ Marbūṭa: pausal /a/; in MSA /t/ surfaces when a vowel or tanwīn is written on it
         if ch == TAA_MARBUTA:
             if not (units and units[-1][0] == "a"):
                 units.append(("a", i))
             if nxt in VOWEL_MARKS or nxt in TANWIN_MARKS:
-                units.append(("t", i))
-                i=_consume_diacritics(word,i+1,n,diacritics,units); continue
+                if rules.get("taa_marbuta_t", False):
+                    units.append(("t", i))
+                    i=_consume_diacritics(word,i+1,n,diacritics,units); continue
+                i += 1
+                while i < n and word[i] in diacritics:         # dialects: case marks ignored
+                    i += 1
+                continue
             i += 1; continue
         # regular letter
         if ch in letters:
