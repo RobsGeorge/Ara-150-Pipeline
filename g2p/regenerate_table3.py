@@ -1,8 +1,8 @@
 """
 regenerate_table3.py
 ====================
-Recomputes the marker-evaluation table of the G2P paper (Table 2 in the
-manuscript; the script keeps its historical name) from the released engine.
+Recomputes the marker-evaluation tables of the G2P paper (Tables 3 and A3) from the
+released engine.
 
 Usage:
     python regenerate_table3.py --test-csv test_split.csv --output table2.csv
@@ -42,7 +42,7 @@ import csv
 import sys
 from collections import defaultdict
 
-from arabic_g2p_rules import (ALLAH, ARTICLE, IPA_RULES, MOON_LETTERS, SUN_LETTERS,
+from arabic_g2p_rules import (ARTICLE, IPA_RULES, MOON_LETTERS, SUN_LETTERS,
                               arabic_words, strip_diacritics, transcribe_word_aligned)
 
 DIALECT_NORM = {
@@ -76,8 +76,8 @@ PROC_REF = {
     "Khaliji Arabic":               {"و": "wɪ", "ف": "fɪ", "ب": "bɪ", "ك": "kɪ"},
     "Modern Standard Arabic (MSA)": {"و": "wa", "ف": "fa", "ب": "bi", "ك": "ka"},
 }
-LIL_REF = {"Egyptian": ("lel-", "le-"), "Levantine Arabic": ("lil-", "li-"),
-           "Khaliji Arabic": ("lil-", "li-"), "Modern Standard Arabic (MSA)": ("lil-", "li-")}
+LIL_REF = {"Egyptian": ("lel-", "le-"), "Levantine Arabic": ("lɪl-", "lɪ-"),
+           "Khaliji Arabic": ("lɪl-", "lɪ-"), "Modern Standard Arabic (MSA)": ("lil-", "li-")}
 LEARNED_DIALECTS = {"Egyptian", "Levantine Arabic"}
 ORDER = ["Egyptian", "Khaliji Arabic", "Levantine Arabic", "Modern Standard Arabic (MSA)"]
 
@@ -94,7 +94,7 @@ SUN_REF = {
 }
 # Letter classes, also written out independently of the engine.
 SUN_CLASS = set("تثدذرزسشصضطظلن")
-MOON_CLASS = set("ءأإآبجحخعغفقكمهوي") | {"ا"}          # bare Alif behaves as a moon environment
+MOON_CLASS = set("ءأإآبجحخعغفقكمهوي") | {"ا"} | set("\u06A4\u0686\u06AF\u067E\u06A8")  # bare Alif, loan letters
 assert all(set(v) == SUN_CLASS for v in SUN_REF.values())
 
 
@@ -112,15 +112,22 @@ LEARNED_REF = {
     "ثانيا", "عذاب", "حذر", "ذهن", "ذهنية", "تلميذ", "تلاميذ", "نموذج", "وراثية", "وثيقة", "وثائق",
 }
 LEARNED_VALUE = {"ث": "s", "ذ": "z"}
+# The name of God and its proclitic forms: lexical, not scored as article environments.
+SCOPE_LEXICAL = {"الله", "والله", "بالله", "لله", "فالله", "تالله", "ولله", "فلله", "الحمدلله", "والحمدلله"}
+WALID_SUFFIXES = {"", "ي", "ه", "ك", "ها", "هم", "كم", "نا", "ة", "تي", "ته", "تها", "تك", "تهم", "تكم", "تنا",
+                  "يه", "يها", "يهم", "يك", "اه", "ان", "اي"}
 SCOPE_NOT_ARTICLE = {"والدي", "والده", "والدة", "والدك", "والدهم", "والدتي", "والدته", "والدتها", "والدتك",
                      "والديه", "بالها", "بالهم", "بالكم", "بالنا", "بالغة", "بالغين", "بالغا", "بالغت", "بالون",
                      "كاليفورنيا", "كالوري", "كالوريز", "واللا", "والتر"}
 _PRE = [a + b + c for a in ("", "و", "ف") for b in ("", "ب", "ك", "ل") for c in ("", "ال")] + [a + "لل" for a in ("", "و", "ف")]
-_SUF = ["ه", "ها", "هم", "هن", "كم", "نا", "ي", "ة", "ات", "ين", "ون", "ا", "ية", "يات"]
+_SUF = ["ه", "ها", "هم", "هن", "ك", "كم", "نا", "ي", "ة", "ات", "ين", "ون", "ا", "ية", "يات"]
+NOT_LEARNED_REF = {"هذاك", "هذيك"}
 _DIAC = set("\u064B\u064C\u064D\u064E\u064F\u0650\u0651\u0652\u0670")
 
 
 def learned_word(bare):
+    if any(bare.startswith(p) and bare[len(p):] in NOT_LEARNED_REF for p in _PRE):
+        return False
     for p in _PRE:
         if bare.startswith(p) and len(bare) - len(p) >= 2:
             r = bare[len(p):]
@@ -135,7 +142,8 @@ def article_env(word):
     L = [word[k] for k in pos]
     if len(L) >= 3 and L[:2] == ["ا", "ل"] and L[2] not in "ىا" or (len(L) > 3 and L[:3] == ["ا", "ل", "ا"]):
         return "article", "", pos[2]
-    if "".join(L) in SCOPE_NOT_ARTICLE:
+    b = "".join(L)
+    if b in SCOPE_NOT_ARTICLE or (b.startswith("والد") and b[4:] in WALID_SUFFIXES):
         return None
     for lead in ("", "و", "ف"):
         m = len(lead)
@@ -152,9 +160,9 @@ def wasl(stem):
     """Hamzat al-waṣl after the article: forms VII, VIII, X verbal nouns; اسم, ابن, اثنين, امرأة."""
     s = "".join(ch for ch in stem if ch not in _DIAC)
     if any(s == n or (s.startswith(n) and s[len(n):] in ("ه", "ها", "هم", "ي", "ك", "نا", "كم"))
-           for n in ("اسم", "ابن", "ابنة", "اثنين", "اثنان", "اتنين", "امرأة", "امراة")):
+           for n in ("اسم", "ابن", "ابنة", "ابنت", "اثنين", "اثنان", "اتنين", "امرأة", "امراة")) or s.startswith(("اسمع", "اسمح")):
         return True
-    if s.startswith("استرال"):
+    if s.startswith(("استرال", "اسطوان")):
         return False
     return ((len(s) >= 6 and ((s[4] == "ا" and (s[1] == "ن" or s[2] in "تطد")) or (s.startswith("است") and s[5:6] == "ا")))
             or (len(s) >= 5 and s[1] == "ت" and s[3] == "ا"))
@@ -197,7 +205,13 @@ def score_word(word, dialect, acc):
     # (ii) definite article: ال, proclitic + ال, لل (moon environments include bare Alif).
     # The name of God (الله and its proclitic forms) is a lexical exception, not scored.
     env = article_env(word)
-    if env and bare not in ALLAH:
+    if env is None and (bare in SCOPE_NOT_ARTICLE or (bare.startswith("والد") and bare[4:] in WALID_SUFFIXES)):
+        acc["nonart"][1] += 1                                  # control: listed non-article words get no prefix
+        ok = not _from(aligned(), ARTICLE)
+        acc["nonart"][0] += ok
+        if not ok:
+            acc["nonart_fail"].append((word, aligned()))
+    if env and bare not in SCOPE_LEXICAL:
         kind, proc, start = env
         c = word[start]
         if kind == "article":
@@ -217,6 +231,9 @@ def score_word(word, dialect, acc):
             acc["sun"][0] += ok
             if not ok:
                 acc["sun_fail"].append((word, aligned()))
+        elif c not in MOON_CLASS:                              # letter outside both classes: counted as a miss
+            acc["moon"][1] += 1
+            acc["moon_fail"].append((word, aligned()))
         elif c in MOON_CLASS:
             if c == "ا":                                       # waṣl Alif silent, otherwise the glottal onset
                 ok = art == [moon_pre] and got == ([] if wasl(word[start:]) else ["ʔ"])
@@ -231,7 +248,7 @@ def score_word(word, dialect, acc):
 def new_acc():
     return {"mrc": defaultdict(lambda: [0, 0]), "mrc_fail": defaultdict(list),
             "sun": [0, 0], "sun_fail": [], "moon": [0, 0], "moon_fail": [],
-            "kind": defaultdict(int), "learned": [0, 0], "sentences": 0}
+            "kind": defaultdict(int), "learned": [0, 0], "nonart": [0, 0], "nonart_fail": [], "sentences": 0}
 
 
 def evaluate(rows):
@@ -264,6 +281,7 @@ def write_csv(accs, path):
             for k, label in (("article", "ال"), ("proc", "proclitic + ال"), ("lil", "لل")):
                 w.writerow([s, "Article environments", label, "", a["kind"][k], ""])
             w.writerow([s, "Learned words", "Thāʾ/Dhāl -> /s/, /z/ (included in DMA)", *a["learned"], pct(*a["learned"])])
+            w.writerow([s, "Non-article control", "listed non-article words", *a["nonart"], pct(*a["nonart"])])
 
 
 def report(accs):
@@ -347,6 +365,16 @@ def self_test():
     eng._wasl_stem = saved_w
     ok = broken == [0, 1]; failures += not ok
     print(f"  [{'PASS' if ok else 'FAIL'}] every Alif after the article made silent: {broken}")
+    eng.NOT_ARTICLE.discard("بالها")
+    broken = evaluate([("بالها", "Egyptian")])["Egyptian"]["nonart"]
+    eng.NOT_ARTICLE.add("بالها")
+    ok = broken == [0, 1]; failures += not ok
+    print(f"  [{'PASS' if ok else 'FAIL'}] non-article word removed from the engine's lexicon: {broken}")
+    sun_set["letters"] = saved_spec + "ق"
+    broken = evaluate([("القمر", "Egyptian")])["Egyptian"]["moon"]
+    sun_set["letters"] = saved_spec
+    ok = broken == [0, 1]; failures += not ok
+    print(f"  [{'PASS' if ok else 'FAIL'}] moon letter Qāf geminated like a sun letter: {broken}")
     print(f"\n==== self-test {'PASSED' if not failures else f'FAILED ({failures})'} ====")
     return failures == 0
 

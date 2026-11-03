@@ -5,11 +5,12 @@ alif = /aː/ medially & glottal onset word-initially, and the principle that sho
 require a diacritization stage (CAMeL/Mishkal/Farasa) before G2P.
 """
 import re
+import unicodedata
 import warnings
 
 # 14 sun letters (INCLUDING lam, per Sibawayh's coronal-assimilation class)
 SUN_LETTERS = set("تثدذرزسشصضطظلن")
-MOON_LETTERS = set("ءأإآبجحخعغفقكمهوي")
+MOON_LETTERS = set("ءأإآبجحخعغفقكمهوي") | set("\u06A4\u0686\u06AF\u067E\u06A8")   # + loan letters ڤ چ گ پ ڨ
 
 # Hamza family: glottal stop /ʔ/; inherent orthographic vowels only where the glyph fixes them
 HAMZA = {"ء":"/ʔ/","أ":"/ʔ/","إ":"/ʔi/","آ":"/ʔaː/","ؤ":"/ʔ/","ئ":"/ʔ/"}
@@ -21,6 +22,8 @@ def build_rules():
         "ر":"/ɾ/","ز":"/z/","س":"/s/","ش":"/ʃ/","ص":"/sˤ/","ض":"/dˤ/","ط":"/tˤ/","ظ":"/zˤ/",
         "ع":"/ʕ/","غ":"/ɣ/","ف":"/f/","ق":"/ʔ/","ك":"/k/","ل":"/l/","م":"/m/","ن":"/n/",
         "ه":"/h/","و":"/w/","ي":"/j/","ة":"/a/ or /et/","ا":"/aː/",
+        # letters used for loanwords: ڤ /v/, چ /tʃ/, گ and ڨ /ɡ/, پ /p/
+        "\u06A4":"/v/","\u0686":"/tʃ/","\u06AF":"/ɡ/","\u06A8":"/ɡ/","\u067E":"/p/",
     }
     over = {
         "Egyptian": {},  # base IS Egyptian (Cairene)
@@ -34,7 +37,7 @@ def build_rules():
         "Khaliji Arabic": ("/ɪl-/","/ɪ-/"),
         "Modern Standard Arabic (MSA)": ("/al-/","/a-/"),
     }
-    lil = {"Egyptian":"/lel-/","Levantine Arabic":"/lil-/","Khaliji Arabic":"/lil-/","Modern Standard Arabic (MSA)":"/lil-/"}
+    lil = {"Egyptian":"/lel-/","Levantine Arabic":"/lɪl-/","Khaliji Arabic":"/lɪl-/","Modern Standard Arabic (MSA)":"/lil-/"}
     # v1.6. Vowel of each proclitic before the article (Wāw, Fāʾ, Bāʾ, Kāf): the article's
     # hamzat al-waṣl is elided and the proclitic carries the vowel (/wel-/, /bil-/, /wal-/).
     proc = {
@@ -133,7 +136,10 @@ TATWEEL, SHADDA = "\u0640", "\u0651"
 ALIF, ALIF_MAQSURA, TAA_MARBUTA, HAMZA_BELOW, LAM = "\u0627", "\u0649", "\u0629", "\u0625", "\u0644"
 VOWEL_MARKS = {"\u064E": "a", "\u064F": "u", "\u0650": "i"}
 TANWIN_MARKS = {"\u064B": "an", "\u064C": "un", "\u064D": "in"}
-_ARABIC_LETTER = re.compile(r"[\u0621-\u063A\u0641-\u064A]")
+_ARABIC_LETTER = re.compile(r"[\u0621-\u063A\u0641-\u064A\u067E\u0686\u06A4\u06A8\u06AF]")
+def _strip_inner(tok):
+    """Remove Tatweel and punctuation inside a token (ال"يوتيوب, ال(بوستات)."""
+    return "".join(ch for ch in tok.replace(TATWEEL, "") if not unicodedata.category(ch).startswith("P"))
 _DIACRITIC = re.compile(r"[\u064B-\u0652\u0670]")
 _LATIN = re.compile(r"([A-Za-z]+(?:['\u2019-][A-Za-z]+)*)")
 _NUMBER = re.compile(r"([0-9\u0660-\u0669\u06F0-\u06F9]+(?:[.,\u066B\u066C][0-9\u0660-\u0669\u06F0-\u06F9]+)*)")
@@ -152,6 +158,9 @@ LEXICAL = ARTICLE - 1   # source index for units that come from a lexical except
 # v1.6 lexicons (bare forms; matched on the word or on its stem, see stems()).
 # Words in which proclitic + ال is not an article (والد "father", بالها "her mind", ...).
 # Every lexicon entry below is attested in the training split of the corpus.
+# والد "father" / والدة "mother" with a pronominal suffix is never an article word.
+_WALID_SUFFIXES = {"", "ي", "ه", "ك", "ها", "هم", "كم", "نا", "ة", "تي", "ته", "تها", "تك", "تهم", "تكم", "تنا",
+                   "يه", "يها", "يهم", "يك", "اه", "ان", "اي"}
 NOT_ARTICLE = {"والدي", "والده", "والدة", "والدك", "والدهم", "والدتي", "والدته", "والدتها", "والدتك",
                "والديه", "بالها", "بالهم", "بالكم", "بالنا", "بالغة", "بالغين", "بالغا", "بالغت", "بالون",
                "كاليفورنيا", "كالوري", "كالوريز", "واللا", "والتر"}
@@ -188,7 +197,8 @@ LEARNED = {
 }
 _PREFIXES = sorted({a + b + c for a in ("", "و", "ف") for b in ("", "ب", "ك", "ل") for c in ("", "ال")}
                    | {a + "لل" for a in ("", "و", "ف")}, key=len, reverse=True)
-_SUFFIXES = ("", "ه", "ها", "هم", "هن", "كم", "نا", "ي", "ة", "ات", "ين", "ون", "ا", "ية", "يات")
+_SUFFIXES = ("", "ه", "ها", "هم", "هن", "ك", "كم", "نا", "ي", "ة", "ات", "ين", "ون", "ا", "ية", "يات")
+NOT_LEARNED = {"هذاك", "هذيك"}                                  # Levantine colloquial demonstratives (hadaːk)
 
 def stems(bare, suffixes=False):
     """The bare word and the forms left after removing proclitics/article (and, if suffixes,
@@ -204,7 +214,7 @@ def stems(bare, suffixes=False):
 
 def is_learned(bare):
     """True if the bare word is (an inflected form of) a learned word of the LEARNED lexicon."""
-    return bool(stems(bare, suffixes=True) & LEARNED)
+    return not (stems(bare) & NOT_LEARNED) and bool(stems(bare, suffixes=True) & LEARNED)
 
 def article_parse(word):
     """Analyse word-initial article material. Returns (kind, proclitics, start) where kind is
@@ -214,7 +224,7 @@ def article_parse(word):
     if is_article(word):
         return "article", "", pos[2]
     bare = strip_diacritics(word)
-    if bare in NOT_ARTICLE:
+    if bare in NOT_ARTICLE or (bare.startswith("والد") and bare[4:] in _WALID_SUFFIXES):
         return None, "", 0
     letters = [word[k] for k in pos]
     for lead in ("", "و", "ف"):
@@ -233,20 +243,24 @@ def article_parse(word):
 # pronounced after the article (الاستثمار /el-stθmaːr/, not /el-ʔstθmaːr/).
 # The nouns اسم, ابن, اثنين/اتنين and امرأة also begin with hamzat al-waṣl (with or
 # without a pronominal suffix; the plurals أسماء, أبناء have a pronounced hamza).
-WASL_NOUNS = {"اسم", "ابن", "ابنة", "اثنين", "اثنان", "اتنين", "امرأة", "امراة"}
+WASL_NOUNS = {"اسم", "ابن", "ابنة", "ابنت", "اثنين", "اثنان", "اتنين", "امرأة", "امراة"}
+WASL_IMPERATIVES = ("اسمع", "اسمح")                            # اسمع "listen", اسمح "allow", with endings
+NOT_WASL = {"باتمان", "واتساب", "فاتنات", "كاتدرائية"}           # loanwords and nouns shaped like form VIII
+NOT_WASL_STEMS = ("استرال", "اسطوان")                            # أستراليا, أسطوانة: hamzat al-qaṭʿ
+NOT_PLURAL = {"جوا", "سوا", "هوا"}                               # جوا "inside", سوا "together", هوا "air": not verbs
 _PRON = ("", "ه", "ها", "هم", "ي", "ك", "نا", "كم")
 
 def _wasl_stem(stem, after_article=True):
     s = strip_diacritics(stem)
     if not s or s[0] != ALIF:
         return False
-    if any(s.endswith(x) and s[:len(s) - len(x)] in WASL_NOUNS for x in _PRON):
+    if any(s.endswith(x) and s[:len(s) - len(x)] in WASL_NOUNS for x in _PRON) or s.startswith(WASL_IMPERATIVES):
         return True
-    if s.startswith("استرال"):                                 # أستراليا
+    if s.startswith(NOT_WASL_STEMS):
         return False
     return ((len(s) >= 6 and ((s[4] == ALIF and (s[1] == "ن" or s[2] in "تطد"))
                               or (s.startswith("است") and s[5:6] == ALIF)))
-            or (after_article and len(s) >= 5 and s[1] == "ت" and s[3] == ALIF))  # اتجاه, اتصال
+            or (len(s) >= 5 and s[1] == "ت" and s[3] == ALIF))   # assimilated form VIII: اتجاه, اتصال
 
 # لأن "because" written with a bare Alif: the Alif is the hamza seat /ʔ/, not a long vowel.
 LAN = {"لان", "لانه", "لانها", "لانهم", "لاني", "لانك", "لاننا", "لانكم", "لانو"}
@@ -257,7 +271,7 @@ SILENT_WAW = {"عمرو"}
 def normalize_token(tok):
     """Remove Tatweel and strip non-letter characters (punctuation, digits, symbols)
     from both ends of an Arabic token; diacritics on the last letter are kept."""
-    tok = tok.replace(TATWEEL, "")
+    tok = _strip_inner(tok)
     a, b = 0, len(tok)
     while a < b and not _ARABIC_LETTER.match(tok[a]):
         a += 1
@@ -288,11 +302,11 @@ def segment(text):
                         continue
                     p = normalize_token(sub)
                     if p:
-                        core = sub.replace(TATWEEL, "")
-                        if not core.startswith(p):
+                        raw = sub.replace(TATWEEL, "")
+                        if not _ARABIC_LETTER.match(raw[0]):
                             yield ("pb", sub)                  # punctuation before the word
                         yield ("ar", p)
-                        if not core.endswith(p):
+                        if not (_ARABIC_LETTER.match(raw[-1]) or _DIACRITIC.match(raw[-1])):
                             yield ("pb", sub)                  # punctuation after the word
                     elif sub.strip():
                         yield ("pb", sub)
@@ -340,6 +354,17 @@ def is_article(word):
             and letters[2] != ALIF_MAQSURA and bool(_ARABIC_LETTER.match(letters[2]))
             and letters != [ALIF, LAM, ALIF])                # الا "except" (ʔillā)
 
+def _h_vowel(bare, rules):
+    """ده, كده, لسه, بره, النهارده, بكره, alone or after و/ف and ب/ل; bare ده after a proclitic
+    only in Egyptian (Levantine بده is biddo 'he wants', Gulf وده is widda 'he wants')."""
+    for lead in ("", "و", "ف"):
+        for prep in ("", "ب", "ل"):
+            p = lead + prep
+            if bare.startswith(p) and bare[len(p):] in H_VOWEL:
+                stem = bare[len(p):]
+                return not (stem == "ده" and p and rules["pronoun_suffix"] != "u")
+    return False
+
 def _final(word, i):
     """True if only diacritics follow position i."""
     return not strip_diacritics(word[i + 1:])
@@ -377,7 +402,7 @@ def transcribe_aligned(word, letters, diacritics, sun_letters, rules, construct=
         k = 0
         for ch in lead:                                        # و/ف before ب, ك or لل
             while word[k] != ch: k += 1
-            units.append((lookup(ch), k)); k += 1
+            units.append((lookup(ch), k)); k = _consume_diacritics(word, k + 1, n, diacritics, units)
         if word[start] in sun_letters:
             sp = lookup(word[start])
             if sp == "ɾ": sp = "r"                              # geminate tap -> trill
@@ -394,8 +419,7 @@ def transcribe_aligned(word, letters, diacritics, sun_letters, rules, construct=
             after_article = bool(units) and units[-1][1]==ARTICLE
             second = len(strip_diacritics(word[:i])) == 1      # second letter of the word
             after_proclitic = second and word[0] in PROCLITICS + LAM
-            if ch==ALIF and ((after_article and _wasl_stem(word[i:]))
-                             or (after_proclitic and _wasl_stem(word[i:], after_article=False))):
+            if ch==ALIF and bare not in NOT_WASL and (after_article or after_proclitic) and _wasl_stem(word[i:]):
                 pass                                           # hamzat al-waṣl after the article or a proclitic: silent
             elif ch==ALIF and second and bare in LAN:
                 units.append(("ʔ", i))                          # لانه: hamza seat
@@ -409,7 +433,8 @@ def transcribe_aligned(word, letters, diacritics, sun_letters, rules, construct=
             elif ch==ALIF and _final(word, i) and (bare in TANWIN_ADV or bare[1:] in TANWIN_ADV and bare[0] in "وف"):
                 if units and units[-1][0]=="a": units.pop()
                 units.append(("an", i))                        # unmarked tanwīn of an adverb: جدا /ɡdan/
-            elif ch==ALIF and _final(word, i) and len(bare)>=4 and bare[-2]=="و" and bare[-3]!=ALIF and not kind:
+            elif (ch==ALIF and _final(word, i) and len(bare)>=4 and bare[-2]=="و" and bare[-3]!=ALIF and not kind
+                  and not (bare[0] in "وفبل" and bare[1:] in NOT_PLURAL)):
                 if units and units[-1][0]=="w":                # plural ending ـوا: Wāw is /uː/, Alif silent
                     units[-1]=("uː", units[-1][1])
             elif units and units[-1][0]=="a":
@@ -420,7 +445,8 @@ def transcribe_aligned(word, letters, diacritics, sun_letters, rules, construct=
         # Tāʾ Marbūṭa: pausal /a/; in MSA /t/ surfaces when a vowel or tanwīn is written on it;
         # in the construct state (before a definite noun) it is /et/, /ɪt/ or /at/ in every variety.
         if ch == TAA_MARBUTA:
-            if not (units and units[-1][0] == "a"):
+            after_long = bool(units) and units[-1][0] == "aː"         # صلاة, حياة: /aː/ already written
+            if not (units and units[-1][0] in ("a", "aː")):
                 units.append(("a", i))
             if (nxt in VOWEL_MARKS or nxt in TANWIN_MARKS) and rules.get("taa_marbuta_t", False):
                 units.append(("t", i))
@@ -430,7 +456,9 @@ def transcribe_aligned(word, letters, diacritics, sun_letters, rules, construct=
                 i += 1
             if construct:
                 ct = rules["construct_ta"]
-                units[-1] = (ct[:-1], units[-1][1]); units.append((ct[-1], units[-1][1]))
+                if not after_long:
+                    units[-1] = (ct[:-1], units[-1][1])
+                units.append((ct[-1], i))
             continue
         # regular letter
         if ch in letters:
@@ -444,13 +472,14 @@ def transcribe_aligned(word, letters, diacritics, sun_letters, rules, construct=
                 ph="ʔ"                                         # explicit kasra supplies the /i/
             # final Hāʾ after a consonant (EGY, LEV): the 3rd-person suffix is a vowel (عنده /ʕndu/);
             # ده, كده, ... spell /a/; root and learned /h/ is kept (شبه, هذه)
-            undiacritized = word == bare
-            if (ch == "ه" and _final(word, i) and undiacritized and not rules["taa_marbuta_t"]
-                    and (bare in H_VOWEL or (bare[0] in "وف" and bare[1:] in H_VOWEL))):
+            unmarked = i + 1 >= n                              # no diacritic written on the final ه
+            if ch == "ه" and _final(word, i) and unmarked and not rules["taa_marbuta_t"] and _h_vowel(bare, rules):
                 units.append(("a", i)); i = n; continue        # ده, كده: ه spells /a/ (dialects)
-            if (ch == "ه" and rules.get("pronoun_suffix") and _final(word, i) and undiacritized and len(bare) >= 2
+            if (ch == "ه" and rules.get("pronoun_suffix") and _final(word, i) and unmarked and len(bare) >= 2
                     and bare[-2] not in "اويى" and not (stems(bare) & H_ROOT)):
                 # a definite noun takes no possessive suffix: its final ه spells Tāʾ Marbūṭa (الكوره)
+                if units and units[-1][0] in ("a", "i", "u"):
+                    units.pop()                                # a written vowel before the suffix (عِنْدُه)
                 units.append(("a" if kind else rules["pronoun_suffix"], i))
                 i = n; continue
             if ch == "و" and _final(word, i) and bare in SILENT_WAW:

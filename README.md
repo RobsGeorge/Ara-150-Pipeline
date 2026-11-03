@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
 [![Dataset License](https://img.shields.io/badge/Corpus-CC--BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-Ara--150-orange)](https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS)
-[![Tests](https://img.shields.io/badge/G2P%20tests-112%2F112%20passing-brightgreen)]()
+[![Tests](https://img.shields.io/badge/G2P%20tests-118%2F118%20passing-brightgreen)]()
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)]()
 
 **Ara-150** is a ~152-hour multi-dialect Arabic speech corpus designed for
@@ -28,7 +28,7 @@ Text-to-Speech (TTS) research, accompanied by an automated processing pipeline
 
 - **Audio:** 22.05 kHz, stereo, 16-bit WAV — TTS-suitable quality
 - **Transcription:** Whisper large-v3 · CER 7.02% (pre-human verification)
-- **Phonemes:** rule-based G2P engine · 100% Dialectal Marker Accuracy on test split
+- **Phonemes:** rule-based G2P engine (rule application verified on the test split: 100% Dialect Marker Accuracy and article-rule consistency)
 - **Speakers:** pseudonymous (SPK_NNN) · age, gender, dialect, emotion per clip
 - **License:** corpus CC-BY-NC-SA 4.0 · code MIT
 
@@ -87,7 +87,7 @@ Supported dialects: `"Egyptian"` · `"Khaliji Arabic"` · `"Levantine Arabic"` �
 ```bash
 pip install -r requirements.txt
 python g2p/test_arabic_g2p.py
-# ==== 112/112 tests passed ====
+# ==== 118/118 tests passed ====
 ```
 
 ---
@@ -110,7 +110,7 @@ Set `GOOGLE_DRIVE_PATH` at the top of each notebook to your Drive folder.
 
 ```bash
 cd g2p
-python test_arabic_g2p.py                        # 112 unit tests
+python test_arabic_g2p.py                        # 118 unit tests
 python regenerate_table3.py --self-test          # sabotages each rule; the scorer must report misses
 python regenerate_table3.py --test-csv data/test_split.csv --output results/table2_regenerated.csv
 python make_table3_rows.py                       # qualitative-comparison rows, emitted from the engine
@@ -141,11 +141,17 @@ the engine's lexicons; the self-test shows that a wrong lexicon entry is detecte
 
 `g2p/human_eval/select_sentences.py` draws the human-evaluation sample (50 sentences per
 dialect, fixed seed, 3-25 words, no Latin script) from the development split
-(`g2p/data/dev_split.csv`, sanitized like the test split; it played no part in designing
-the rules or the word lexicons) and writes the
-engine's output on the undiacritized transcript (diacritization disabled) to
-`g2p/human_eval/sentences.csv`. Annotators judge the engine itself: consonants, the
-definite article, and written long vowels.
+(`g2p/data/dev_split.csv`, sanitized like the test split), excluding development sentences
+whose text also occurs in the test split, and writes the engine's output on the
+undiacritized transcript to `g2p/human_eval/sentences.csv` (`Item` is a unique key: corpus
+IDs repeat across recording sessions). The development split played no part in designing
+the rules or the word lexicons; the annotation guide was piloted on a separate test-split
+sample, with AI agents as stand-in annotators, and those pilot judgments are not results.
+
+`g2p/human_eval/workbooks/` holds the annotation material: one blind workbook per
+annotator (`annotator_EGY-A.xlsx` ... `annotator_GLF-B.xlsx`, guide in English and Egyptian
+Arabic) and the adjudication workbook. `merge_annotations.py` merges the six files into the
+adjudication workbook; `build_workbook.py` rebuilds all of them from `sentences.csv`.
 
 ## Dataset download
 

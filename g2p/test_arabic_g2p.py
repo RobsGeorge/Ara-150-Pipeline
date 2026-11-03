@@ -127,7 +127,7 @@ results.append(t("والحلقة", E, must_equal="/wel-ħlʔa/"))               
 results.append(t("بالساطور", E, must_equal="/be-ssaːtˤwɾ/"))             # proclitic + sun article
 results.append(t("والشمس", M, must_equal="/wa-ʃʃms/"))
 results.append(t("وبالتالي", L, must_equal="/wbɪ-ttaːlj/"))              # و + ب + article
-results.append(t("للثورة", L, must_equal="/li-sswra/"))                  # li-l + sun, learned Thāʾ
+results.append(t("للثورة", L, must_equal="/lɪ-sswra/"))                  # li-l + sun, learned Thāʾ
 results.append(t("والد", E, must_equal="/waːld/"))                       # not an article (father)
 results.append(t("بالك", E, must_equal="/baːlk/"))                       # not an article (your mind)
 results.append(t("والدي", E, must_equal="/waːldj/"))                     # NOT_ARTICLE lexicon
@@ -167,6 +167,12 @@ results.append(t("الاسماك", E, must_equal="/el-ʔsmaːk/"))              
 results.append(t("باسمها", L, must_equal="/bsmhaː/"))                    # waṣl noun with a suffix
 results.append(t("باتمان", E, must_equal="/baːtmaːn/"))                  # not a waṣl stem after a proclitic
 results.append(t("الحمدلله", E, must_equal="/alħamdulillaːh/"))          # lexical
+results.append(t("صلاة", E, must_equal="/sˤlaː/"))                       # Tāʾ Marbūṭa after a written /aː/
+results.append(t("حياة الناس", E, must_equal="/ħjaːt/ /e-nnaːs/"))      # ... and in the construct state
+results.append(t("الڤيديو", E, must_equal="/el-vjdjw/"))                 # loan letter ڤ /v/ (moon)
+results.append(t('ال"يوتيوب', E, must_equal="/el-jwtjwb/"))              # quotation mark inside a token
+results.append(t("وسوا", E, must_equal="/wswaː/"))                       # not a plural ending
+results.append(t("الاسطوانة", E, must_equal="/el-ʔstˤwaːna/"))           # hamzat al-qaṭʿ
 
 passed=sum(1 for r in results if r); total=len(results)
 print(f"\n==== {passed}/{total} tests passed ====")

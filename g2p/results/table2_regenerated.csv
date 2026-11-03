@@ -5,12 +5,13 @@ EGY,DMA (per occurrence),ذ -> /d/,646,646,100.00
 EGY,DMA (per occurrence),ظ -> /zˤ/,588,588,100.00
 EGY,DMA (per occurrence),ق -> /ʔ/,6900,6900,100.00
 EGY,DMA (per occurrence),all markers,13783,13783,100.00
-EGY,Sun-letter assimilation,ال + sun,5637,5637,100.00
-EGY,Moon-letter control,ال + moon,8897,8897,100.00
+EGY,Sun-letter assimilation,ال + sun,5659,5659,100.00
+EGY,Moon-letter control,ال + moon,8953,8953,100.00
 EGY,Article environments,ال,,12623,
-EGY,Article environments,proclitic + ال,,1483,
+EGY,Article environments,proclitic + ال,,1506,
 EGY,Article environments,لل,,483,
-EGY,Learned words,"Thāʾ/Dhāl -> /s/, /z/ (included in DMA)",926,926,100.00
+EGY,Learned words,"Thāʾ/Dhāl -> /s/, /z/ (included in DMA)",928,928,100.00
+EGY,Non-article control,listed non-article words,15,15,100.00
 GLF,DMA (per occurrence),ج -> /dʒ/,1231,1231,100.00
 GLF,DMA (per occurrence),ث -> /θ/,483,483,100.00
 GLF,DMA (per occurrence),ذ -> /ð/,823,823,100.00
@@ -23,6 +24,7 @@ GLF,Article environments,ال,,3458,
 GLF,Article environments,proclitic + ال,,355,
 GLF,Article environments,لل,,105,
 GLF,Learned words,"Thāʾ/Dhāl -> /s/, /z/ (included in DMA)",0,0,n/a
+GLF,Non-article control,listed non-article words,5,5,100.00
 LEV,DMA (per occurrence),ج -> /ʒ/,1027,1027,100.00
 LEV,DMA (per occurrence),ث -> /t/,383,383,100.00
 LEV,DMA (per occurrence),ذ -> /d/,487,487,100.00
@@ -34,7 +36,8 @@ LEV,Moon-letter control,ال + moon,2016,2016,100.00
 LEV,Article environments,ال,,2850,
 LEV,Article environments,proclitic + ال,,370,
 LEV,Article environments,لل,,117,
-LEV,Learned words,"Thāʾ/Dhāl -> /s/, /z/ (included in DMA)",464,464,100.00
+LEV,Learned words,"Thāʾ/Dhāl -> /s/, /z/ (included in DMA)",469,469,100.00
+LEV,Non-article control,listed non-article words,12,12,100.00
 MSA,DMA (per occurrence),ج -> /dʒ/,926,926,100.00
 MSA,DMA (per occurrence),ث -> /θ/,372,372,100.00
 MSA,DMA (per occurrence),ذ -> /ð/,867,867,100.00
@@ -47,3 +50,4 @@ MSA,Article environments,ال,,2277,
 MSA,Article environments,proclitic + ال,,226,
 MSA,Article environments,لل,,56,
 MSA,Learned words,"Thāʾ/Dhāl -> /s/, /z/ (included in DMA)",0,0,n/a
+MSA,Non-article control,listed non-article words,4,4,100.00
