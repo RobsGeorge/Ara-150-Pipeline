@@ -160,7 +160,7 @@ sentences judged correct (81.3%, 95% Wilson interval 74.3-86.8), Cohen's kappa 0
 
 ## Version used in the AJSE paper
 
-The results of *Rule-Based Phonemization for Arabic Dialects* were produced with engine
+The results of *Rule-Based Phonemization for Arabic Dialects: A Grapheme-to-Phoneme Framework* were produced with engine
 commit `c9fd7c0`, archived unchanged together with the human-evaluation judgments as release
 **v1.6.0**: https://doi.org/10.5281/zenodo.23979713. Later commits on `main` may change the
 engine's output.
@@ -200,7 +200,7 @@ If you use Ara-150 or AraForge in your research, please cite:
 
 @article{basily2026phonemization,
   author    = {Robeir Basily and Cherif Salama and Mahmoud Khalil},
-  title     = {Rule-Based Phonemization for {A}rabic Dialects: A Simple
+  title     = {Rule-Based Phonemization for {A}rabic Dialects: A
                Grapheme-to-Phoneme Framework},
   journal   = {Arabian Journal for Science and Engineering},
   year      = {2026},
