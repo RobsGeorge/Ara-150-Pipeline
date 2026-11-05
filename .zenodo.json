@@ -1,0 +1,35 @@
+{
+  "title": "Ara-150-Pipeline: AraForge pipeline and dialect-aware Arabic G2P engine",
+  "upload_type": "software",
+  "license": "MIT",
+  "description": "Rule-based grapheme-to-phoneme engine for Egyptian, Levantine and Gulf Arabic and MSA, its evaluation scripts and data, the human-evaluation judgments, and the scripts behind the paper \"Rule-Based Phonemization for Arabic Dialects: A Grapheme-to-Phoneme Framework\" (submitted to the Arabian Journal for Science and Engineering).",
+  "creators": [
+    {
+      "name": "Basily, Robeir",
+      "affiliation": "Ain Shams University"
+    },
+    {
+      "name": "Salama, Cherif",
+      "affiliation": "Ain Shams University; The American University in Cairo"
+    },
+    {
+      "name": "Khalil, Mahmoud",
+      "affiliation": "Ain Shams University"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.20452142",
+      "relation": "isSupplementTo",
+      "resource_type": "dataset"
+    }
+  ],
+  "keywords": [
+    "Arabic",
+    "dialects",
+    "grapheme-to-phoneme",
+    "phonemization",
+    "text-to-speech",
+    "IPA"
+  ]
+}
