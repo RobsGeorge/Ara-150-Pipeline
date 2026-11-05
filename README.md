@@ -194,20 +194,36 @@ If you use Ara-150 or AraForge in your research, please cite:
                and Reproducible Processing Pipeline for Text-to-Speech Research},
   journal   = {Language Resources and Evaluation},
   year      = {2026},
-  doi       = {10.5281/zenodo.20452226},
-  url       = {https://doi.org/10.5281/zenodo.20452226}
-  note      = {In submission. Dataset: https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS}
+  note      = {In submission. Dataset: https://doi.org/10.5281/zenodo.20452142,
+               https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS}
 }
 
 @article{basily2026phonemization,
   author    = {Robeir Basily and Cherif Salama and Mahmoud Khalil},
-  title     = {A Rule-Based Framework for Multi-Dialect {A}rabic
-               Grapheme-to-Phoneme Conversion},
+  title     = {Rule-Based Phonemization for {A}rabic Dialects: A Simple
+               Grapheme-to-Phoneme Framework},
   journal   = {Arabian Journal for Science and Engineering},
   year      = {2026},
+  note      = {In submission}
+}
+
+@software{basily2026g2p_v160,
+  author    = {Robeir Basily and Cherif Salama and Mahmoud Khalil},
+  title     = {{Ara-150-Pipeline}: AraForge pipeline and dialect-aware {A}rabic G2P engine},
+  version   = {1.6.0},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.23979713},
+  url       = {https://doi.org/10.5281/zenodo.23979713}
+}
+
+@misc{basily2026ara150data,
+  author    = {Robeir Basily and Cherif Salama and Mahmoud Khalil},
+  title     = {{Ara-150}: A multi-dialect {A}rabic text-to-speech corpus [Data set]},
+  year      = {2026},
+  publisher = {Zenodo},
   doi       = {10.5281/zenodo.20452142},
   url       = {https://doi.org/10.5281/zenodo.20452142}
-  note      = {In submission}
 }
 ```
 
