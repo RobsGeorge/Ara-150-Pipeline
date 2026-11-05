@@ -110,8 +110,39 @@ LEARNED_REF = {
     "اغذية", "أستاذ", "استاذ", "كارثة", "كوارث", "تنفيذ", "نفوذ", "إنقاذ", "انقاذ", "ينقذ", "استثمار",
     "مستثمر", "مستثمرين", "استثناء", "استثنائي", "أثناء", "اثناء", "كثافة", "جاذبية", "يجذب",
     "ثانيا", "عذاب", "حذر", "ذهن", "ذهنية", "تلميذ", "تلاميذ", "نموذج", "وراثية", "وثيقة", "وثائق",
+    "أنقذ", "انقذ", "تنقذ", "منقذ", "ذوات", "ذو", "ذوي", "جثة", "جثث", "بذل", "بذلت", "بذلنا", "بذلوا", "يبذل",
+    "تبذل", "مبذول", "لثة", "أتحدث", "اتحدث", "نتحدث", "متحدث",
 }
 LEARNED_VALUE = {"ث": "s", "ذ": "z"}
+# Lexical consonant exceptions (v1.7): classical words with /q/ in every variety, loanwords with /ɡ/.
+QAF_REF = {"قرآن", "قريش", "قحلاء"}
+JIM_REF = {"جراند", "جوجل"}
+# MSA relative pronouns written with one Lām (الذي /a-llaðiː/): lexical, not scored as article
+# environments; their Dhāl is learned /z/ in Egyptian and Levantine.
+REL_REF = {"الذي", "الذى", "التي", "التى", "الذين"}
+def rel_pronoun(bare):
+    return any(bare == p + r for p in ("", "و", "ف", "ب", "ك", "وب", "فب") for r in REL_REF) or (
+        any(bare == p + "ل" + r[1:] for p in ("", "و", "ف") for r in REL_REF))
+# Words in which initial ال is the stem (v1.7): ألف "thousand", Form VIII of Lām-initial roots.
+ALF_REF = {"الف", "الفين", "الفان", "الاف", "الفا", "الفي"}
+FORM8_REF = {"التقاء", "التقى", "التقيت", "التقينا", "التقوا", "التقت", "التزام", "التزامات", "التزم", "التزمت",
+             "التزموا", "التزمنا", "التهاب", "التهابات", "التحاق", "التحق", "التحقت", "التحقوا", "التماس", "التفات",
+             "التفاتة", "التفت", "التفتت", "التفتوا", "التصاق", "التصق", "التصقت", "التحام", "التحم", "التحمت",
+             "التفاف", "التواء", "التواءات", "التوى", "التهب", "التهبت"}
+FORM8_NOT = {"التماسك", "التفتت"}
+def stem_article(bare):
+    """True if the word's initial ال (after proclitics) belongs to the stem."""
+    if bare in FORM8_NOT:
+        return False
+    for p in ("", "و", "ف", "ب", "ك", "ل", "وب", "فب", "وك", "فك", "ول", "فل"):
+        if bare.startswith(p):
+            r = bare[len(p):]
+            if p in ("", "و", "ف", "ب", "ك", "وب", "فب") and r in ALF_REF and len(bare) >= (3 if not p else 5):
+                return True
+            for x in ("", "ه", "ها", "هم", "ي", "ك", "نا", "كم", "اتي", "اته", "اتها", "اتهم", "اتنا", "اتك", "اتكم"):
+                if r and r.endswith(x) and r[:len(r) - len(x)] in FORM8_REF:
+                    return True
+    return False
 # The name of God and its proclitic forms: lexical, not scored as article environments.
 SCOPE_LEXICAL = {"الله", "والله", "بالله", "لله", "فالله", "تالله", "ولله", "فلله", "الحمدلله", "والحمدلله"}
 WALID_SUFFIXES = {"", "ي", "ه", "ك", "ها", "هم", "كم", "نا", "ة", "تي", "ته", "تها", "تك", "تهم", "تكم", "تنا",
@@ -140,6 +171,8 @@ def article_env(word):
     """(kind, proclitic, index of the first stem letter) for ال, proclitic + ال, لل; None if no article."""
     pos = [k for k, ch in enumerate(word) if ch not in _DIAC]
     L = [word[k] for k in pos]
+    if stem_article("".join(L)):
+        return None
     if len(L) >= 3 and L[:2] == ["ا", "ل"] and L[2] not in "ىا" or (len(L) > 3 and L[:3] == ["ا", "ل", "ا"]):
         return "article", "", pos[2]
     b = "".join(L)
@@ -159,6 +192,8 @@ def article_env(word):
 def wasl(stem):
     """Hamzat al-waṣl after the article: forms VII, VIII, X verbal nouns; اسم, ابن, اثنين, امرأة."""
     s = "".join(ch for ch in stem if ch not in _DIAC)
+    if s.startswith("ال") and stem_article(s):
+        return True                                            # الالتزام: Form VIII Lām word after the article
     if any(s == n or (s.startswith(n) and s[len(n):] in ("ه", "ها", "هم", "ي", "ك", "نا", "كم"))
            for n in ("اسم", "ابن", "ابنة", "ابنت", "اثنين", "اثنان", "اتنين", "امرأة", "امراة")) or s.startswith(("اسمع", "اسمح")):
         return True
@@ -182,9 +217,15 @@ def score_word(word, dialect, acc):
         return units
 
     bare = strip_diacritics(word)
-    learned = dialect in LEARNED_DIALECTS and learned_word(bare)
+    learned = dialect in LEARNED_DIALECTS and (learned_word(bare) or rel_pronoun(bare))
+    lex_q = any(bare.startswith(p) and (bare[len(p):] in QAF_REF or bare[len(p):-1] in QAF_REF) for p in _PRE)
+    lex_g = any(bare.startswith(p) and bare[len(p):] in JIM_REF for p in _PRE)
 
     def ref_of(letter, default):
+        if letter == "ق" and lex_q:
+            return "q"
+        if letter == "ج" and lex_g:
+            return "ɡ"
         return LEARNED_VALUE[letter] if learned and letter in LEARNED_VALUE else default
 
     # (i) per-occurrence marker realization (learned Thāʾ/Dhāl scored against /s/, /z/)
@@ -205,13 +246,14 @@ def score_word(word, dialect, acc):
     # (ii) definite article: ال, proclitic + ال, لل (moon environments include bare Alif).
     # The name of God (الله and its proclitic forms) is a lexical exception, not scored.
     env = article_env(word)
-    if env is None and (bare in SCOPE_NOT_ARTICLE or (bare.startswith("والد") and bare[4:] in WALID_SUFFIXES)):
+    if env is None and (bare in SCOPE_NOT_ARTICLE or (bare.startswith("والد") and bare[4:] in WALID_SUFFIXES)
+                        or stem_article(bare)):
         acc["nonart"][1] += 1                                  # control: listed non-article words get no prefix
         ok = not _from(aligned(), ARTICLE)
         acc["nonart"][0] += ok
         if not ok:
             acc["nonart_fail"].append((word, aligned()))
-    if env and bare not in SCOPE_LEXICAL:
+    if env and bare not in SCOPE_LEXICAL and not rel_pronoun(bare):
         kind, proc, start = env
         c = word[start]
         if kind == "article":
