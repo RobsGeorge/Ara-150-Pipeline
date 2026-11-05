@@ -174,9 +174,10 @@ sentences judged correct (81.3%, 95% Wilson interval 74.3-86.8), Cohen's kappa 0
 ## Version used in the AJSE paper
 
 The results of *Rule-Based Phonemization for Arabic Dialects: A Grapheme-to-Phoneme Framework* were produced with engine
-commit `c9fd7c0`, archived unchanged together with the human-evaluation judgments as release
-**v1.6**: https://doi.org/10.5281/zenodo.23979713. Later commits on `main` may change the
-engine's output.
+commit `c9fd7c0`. Release **v1.6.1** (https://doi.org/10.5281/zenodo.23985063) contains this
+engine unchanged, together with the human-evaluation judgments and the scripts that regenerate
+every number and table of the paper (`paper/`). Later commits on `main` may change the engine's
+output.
 
 ## Dataset download
 
@@ -220,14 +221,14 @@ If you use Ara-150 or AraForge in your research, please cite:
   note      = {In submission}
 }
 
-@misc{basily2026g2p_v16,
+@misc{basily2026g2p_v161,
   author    = {Robeir Basily and Cherif Salama and Mahmoud Khalil},
   title     = {{Ara-150-Pipeline}: AraForge pipeline and dialect-aware {A}rabic G2P engine},
-  version   = {1.6},
+  version   = {1.6.1},
   year      = {2026},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.23979713},
-  url       = {https://doi.org/10.5281/zenodo.23979713}
+  doi       = {10.5281/zenodo.23985063},
+  url       = {https://doi.org/10.5281/zenodo.23985063}
 }
 
 @misc{basily2026ara150data,
