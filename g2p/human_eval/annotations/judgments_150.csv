@@ -1,0 +1,151 @@
+﻿Item,Corpus ID,Dialect,Sentence,Engine IPA,Annotator A,Annotator B,Initial disagreement,Final: correct,Error type,Wrong word,Engine IPA of that word,Correct IPA
+EGY-001,68,Egyptian,ممكن تفتكرها لحيوان منقرد من الماضي الصحيق,/mmkn/ /tftkɾhaː/ /lħjwaːn/ /mnʔɾd/ /mn/ /el-maːdˤj/ /e-sˤsˤħjʔ/,OK,OK,No,Yes,,,,
+EGY-002,231,Egyptian,العلم الغربي لمّا صنّف الذكاء,/el-ʕlm/ /el-ɣɾbj/ /lmmaː/ /sˤnnf/ /e-zzkaːʔ/,OK,OK,No,Yes,,,,
+EGY-003,571,Egyptian,مش بس من المجرم اللي قتل أبوه،,/mʃ/ /bs/ /mn/ /el-mɡɾm/ /e-llj/ /ʔtl/ /ʔbwh/,OK,OK,No,Yes,,,,
+EGY-004,594,Egyptian,حصلت في عهده شِدة، مجاعة قتلت تِلت الشعب،,/ħsˤlt/ /fj/ /ʕhdu/ /ʃida/ /mɡaːʕa/ /ʔtlt/ /tilt/ /e-ʃʃʕb/,OK,OK,No,Yes,,,,
+EGY-005,58,Egyptian,إلا أن المعونة المصرية بدأت بشكل رسمي بعد اتفاقية السلام,/ʔilaː/ /ʔn/ /el-mʕwna/ /el-msˤɾja/ /bdʔt/ /bʃkl/ /ɾsmj/ /bʕd/ /ʔtfaːʔjet/ /e-sslaːm/,Not OK,OK,Yes,Yes,,,,
+EGY-006,130,Egyptian,في النهاية بقى خلال نقفل بفقرة لطيفة شوية,/fj/ /e-nnhaːja/ /bʔaː/ /xlaːl/ /nʔfl/ /bfʔɾa/ /ltˤjfa/ /ʃwja/,OK,OK,No,Yes,,,,
+EGY-007,1283,Egyptian,أد إيه قادرة تدّي الإنسان مجد!,/ʔd/ /ʔijh/ /ʔaːdɾa/ /tddj/ /el-ʔinsaːn/ /mɡd/,OK,OK,No,Yes,,,,
+EGY-008,732,Egyptian,بنشوف حركته، بنعرف جنسه،,/bnʃwf/ /ħɾktu/ /bnʕɾf/ /ɡnsu/,OK,OK,No,Yes,,,,
+EGY-009,400,Egyptian,ولكن حتى الفروقات البيولوجية دي مجرد جزء من الصورة،,/wlkn/ /ħtaː/ /el-fɾwʔaːt/ /el-bjwlwɡja/ /dj/ /mɡɾd/ /ɡzʔ/ /mn/ /e-sˤsˤwɾa/,Not OK,OK,Yes,No,Long vowel or lexical word,ولكن,/wlkn/,/wlaːkn/
+EGY-010,812,Egyptian,ده السؤال اللي تسأله,/da/ /e-ssʔaːl/ /e-llj/ /tsʔlu/,OK,OK,No,Yes,,,,
+EGY-011,700,Egyptian,كأنه بيحاول ينبه اللي بيسمعله إن هو هيقول حاجة صعبة،,/kʔnu/ /bjħaːwl/ /jnbu/ /e-llj/ /bjsmʕlu/ /ʔin/ /hw/ /hjʔwl/ /ħaːɡa/ /sˤʕba/,Not OK,Not OK,No,No,Long vowel or lexical word,ينبه,/jnbu/,/jnbh/
+EGY-012,543,Egyptian,هي دي الطريقة الوحيدة عشان تكون اللهجة دليل تنوع،,/hj/ /dj/ /e-tˤtˤɾjʔa/ /el-wħjda/ /ʕʃaːn/ /tkwn/ /e-llhɡa/ /dljl/ /tnwʕ/,OK,OK,No,Yes,,,,
+EGY-013,903,Egyptian,"وبعد الرشوة، يا عزيزي، ما بقاش فيه أي قوة في ""مصر"" تحميها،",/wbʕd/ /e-rrʃwa/ /jaː/ /ʕzjzj/ /maː/ /bʔaːʃ/ /fjh/ /ʔj/ /ʔwa/ /fj/ /msˤɾ/ /tħmjhaː/,OK,OK,No,Yes,,,,
+EGY-014,438,Egyptian,وأخيرا نتكلم مع بناتنا,/wʔxjɾan/ /ntklm/ /mʕ/ /bnaːtnaː/,OK,OK,No,Yes,,,,
+EGY-015,143,Egyptian,والدكتورة قدرت انها تنقذه وترجعه لحضن اهله مرة تانية,/we-ddktwɾa/ /ʔdɾt/ /ʔnhaː/ /tnʔdu/ /wtɾɡʕu/ /lħdˤn/ /ʔhlu/ /mɾa/ /taːnja/,Not OK,Not OK,No,No,Dialect consonant,تنقذه,/tnʔdu/,/tnʔzu/
+EGY-016,2,Egyptian,بنسمع جملة شهيرة وهي,/bnsmʕ/ /ɡmla/ /ʃhjɾa/ /whj/,OK,OK,No,Yes,,,,
+EGY-017,46,Egyptian,وده بيخلي مالهمش أي دور في عملية التنفس خلال المرحلة دي,/wda/ /bjxlj/ /maːlhmʃ/ /ʔj/ /dwɾ/ /fj/ /ʕmljet/ /e-ttnfs/ /xlaːl/ /el-mɾħla/ /dj/,OK,OK,No,Yes,,,,
+EGY-018,63,Egyptian,إما هو لو إحنا كلنا بشر زي بعض يعني أكيد ما يصحش اللي إحنا بنعمله ده,/ʔimaː/ /hw/ /lw/ /ʔiħnaː/ /klnaː/ /bʃɾ/ /zj/ /bʕdˤ/ /jʕnj/ /ʔkjd/ /maː/ /jsˤħʃ/ /e-llj/ /ʔiħnaː/ /bnʕmlu/ /da/,OK,OK,No,Yes,,,,
+EGY-019,190,Egyptian,ويعدّلوا مضخاتها عشان تناسب الصاروخ.,/wjʕddluː/ /mdˤxaːthaː/ /ʕʃaːn/ /tnaːsb/ /e-sˤsˤaːɾwx/,OK,OK,No,Yes,,,,
+EGY-020,56,Egyptian,ولأن التعابين من ذوات الدم البارد,/wlʔn/ /e-ttʕaːbjn/ /mn/ /dwaːt/ /e-ddm/ /el-baːɾd/,Not OK,Not OK,No,No,Dialect consonant,ذوات,/dwaːt/,/zwaːt/
+EGY-021,455,Egyptian,خلّيني أدلّك على بلد ما فيش في كرم أصحابها،,/xlljnj/ /ʔdllk/ /ʕlaː/ /bld/ /maː/ /fjʃ/ /fj/ /kɾm/ /ʔsˤħaːbhaː/,OK,OK,No,Yes,,,,
+EGY-022,7,Egyptian,يعني الرزاية متأشرة,/jʕnj/ /e-rrzaːja/ /mtʔʃɾa/,OK,OK,No,Yes,,,,
+EGY-023,542,Egyptian,"كانت نموذج مصغر لقراراته الاجتماعية اللي زلزلت ""روسيا"" بحالها!",/kaːnt/ /nmwzɡ/ /msˤɣɾ/ /lʔɾaːɾaːtu/ /el-ɡtmaːʕja/ /e-llj/ /zlzlt/ /ɾwsjaː/ /bħaːlhaː/,OK,Not OK,Yes,Yes,,,,
+EGY-024,224,Egyptian,بسبب دي التنفس,/bsbb/ /dj/ /e-ttnfs/,OK,OK,No,Yes,,,,
+EGY-025,121,Egyptian,على الفاضي وعلى المليان,/ʕlaː/ /el-faːdˤj/ /wʕlaː/ /el-mljaːn/,OK,OK,No,Yes,,,,
+EGY-026,356,Egyptian,از ما اللي احنا فيها ده كمان,/ʔz/ /maː/ /e-llj/ /ʔħnaː/ /fjhaː/ /da/ /kmaːn/,OK,OK,No,Yes,,,,
+EGY-027,151,Egyptian,ولّا نرفض، ونعرض حياتنا وحياة الناس للخطر؟,/wllaː/ /nɾfdˤ/ /wnʕɾdˤ/ /ħjaːtnaː/ /wħjaːt/ /e-nnaːs/ /lel-xtˤɾ/,OK,OK,No,Yes,,,,
+EGY-028,276,Egyptian,دواء في الحياة,/dwaːʔ/ /fj/ /el-ħjaː/,OK,OK,No,Yes,,,,
+EGY-029,291,Egyptian,"ما احنا مش هينفع نفضّي ""القاهرة"" الإسلامية كلها، ونحولها لأثر،",/maː/ /ʔħnaː/ /mʃ/ /hjnfʕ/ /nfdˤdˤj/ /el-ʔaːhɾa/ /el-ʔislaːmja/ /klhaː/ /wnħwlhaː/ /lʔsɾ/,OK,OK,No,Yes,,,,
+EGY-030,323,Egyptian,انا كنت احسن من كدا تخيلوا؟,/ʔnaː/ /knt/ /ʔħsn/ /mn/ /kdaː/ /txjluː/,OK,OK,No,Yes,,,,
+EGY-031,599,Egyptian,ويركّز بس إن مجهوده يروح تجاه الحاجات اللي يقدر يتحكّم فيها.,/wjɾkkz/ /bs/ /ʔin/ /mɡhwdu/ /jɾwħ/ /tɡaːh/ /el-ħaːɡaːt/ /e-llj/ /jʔdɾ/ /jtħkkm/ /fjhaː/,OK,OK,No,Yes,,,,
+EGY-032,43,Egyptian,وأما بالنسبة لاستخدامات اليورانيوم,/wʔmaː/ /be-nnsba/ /lstxdaːmaːt/ /el-jwɾaːnjwm/,OK,OK,No,Yes,,,,
+EGY-033,263,Egyptian,نكمّل باقي الحدوتة،,/nkmml/ /baːʔj/ /el-ħdwta/,OK,OK,No,Yes,,,,
+EGY-034,51,Egyptian,يعني بالعربي كده الباحثين دول شايفين ان عداء القطط والكلاب اللي موجودين في الشارع,/jʕnj/ /bel-ʕɾbj/ /kda/ /el-baːħsjn/ /dwl/ /ʃaːjfjn/ /ʔn/ /ʕdaːʔ/ /el-ʔtˤtˤ/ /wel-klaːb/ /e-llj/ /mwɡwdjn/ /fj/ /e-ʃʃaːɾʕ/,OK,OK,No,Yes,,,,
+EGY-035,736,Egyptian,"أنا شايف آثار جروح، بس الراجل ما نزفش، ما فيش دم.""",/ʔnaː/ /ʃaːjf/ /ʔaːsaːɾ/ /ɡɾwħ/ /bs/ /e-rraːɡl/ /maː/ /nzfʃ/ /maː/ /fjʃ/ /dm/,OK,OK,No,Yes,,,,
+EGY-036,669,Egyptian,دول ناس بيعشقوا الكتاب,/dwl/ /naːs/ /bjʕʃʔuː/ /el-ktaːb/,OK,OK,No,Yes,,,,
+EGY-037,196,Egyptian,"لأن في رأيه: ""الجينز دا احنا عاملينه للناس البسيطة،",/lʔn/ /fj/ /ɾʔjh/ /el-ɡjnz/ /daː/ /ʔħnaː/ /ʕaːmljnu/ /le-nnaːs/ /el-bsjtˤa/,Not OK,Not OK,No,No,Long vowel or lexical word,رأيه,/ɾʔjh/,/ɾʔju/
+EGY-038,191,Egyptian,الخارج عن تعليمات الخلية ده,/el-xaːɾɡ/ /ʕn/ /tʕljmaːt/ /el-xlja/ /da/,OK,OK,No,Yes,,,,
+EGY-039,472,Egyptian,"الله! ازاي يا (أبو حميد) يبيعوا أكتر من عدد الأسهم الحقيقي؟!""",/allaːh/ /ʔzaːj/ /jaː/ /ʔbw/ /ħmjd/ /jbjʕuː/ /ʔktɾ/ /mn/ /ʕdd/ /el-ʔshm/ /el-ħʔjʔj/,OK,OK,No,Yes,,,,
+EGY-040,80,Egyptian,الحقيقة المفاجأة المؤسفة,/el-ħʔjʔa/ /el-mfaːɡʔa/ /el-mʔsfa/,OK,OK,No,Yes,,,,
+EGY-041,837,Egyptian,والسؤال، يا عزيزي، اللي كلنا بنسأله،,/we-ssʔaːl/ /jaː/ /ʕzjzj/ /e-llj/ /klnaː/ /bnsʔlu/,OK,OK,No,Yes,,,,
+EGY-042,218,Egyptian,ولو الڨيديو عاجبكم ما تنسوش اللايك والشير,/wlw/ /el-ɡjdjw/ /ʕaːɡbkm/ /maː/ /tnswʃ/ /e-llaːjk/ /we-ʃʃjɾ/,Not OK,Not OK,No,No,Foreign name or loanword,الڨيديو,/el-ɡjdjw/,/el-vjdjw/
+EGY-043,14,Egyptian,وقتها شمشون حس,/wʔthaː/ /ʃmʃwn/ /ħs/,OK,OK,No,Yes,,,,
+EGY-044,310,Egyptian,بس برضه، تكون قوية كفاية، عشان يقبلوها،,/bs/ /bɾdˤu/ /tkwn/ /ʔwja/ /kfaːja/ /ʕʃaːn/ /jʔblwhaː/,OK,OK,No,Yes,,,,
+EGY-045,303,Egyptian,مش مركز فيه,/mʃ/ /mɾkz/ /fjh/,OK,OK,No,Yes,,,,
+EGY-046,481,Egyptian,انت يا عامل انت!,/ʔnt/ /jaː/ /ʕaːml/ /ʔnt/,OK,OK,No,Yes,,,,
+EGY-047,403,Egyptian,بس عشان الموضوع كان سهل وحلو كدا،,/bs/ /ʕʃaːn/ /el-mwdˤwʕ/ /kaːn/ /shl/ /wħlw/ /kdaː/,OK,OK,No,Yes,,,,
+EGY-048,52,Egyptian,والمثال ده شبيه تماماً لحالة التقاء النهر مع البحر,/wel-msaːl/ /da/ /ʃbjh/ /tmaːman/ /lħaːlet/ /e-ttʔaːʔ/ /e-nnhɾ/ /mʕ/ /el-bħɾ/,Not OK,Not OK,No,No,Definite article,التقاء,/e-ttʔaːʔ/,/ʔltʔaːʔ/
+EGY-049,359,Egyptian,وهو اللي يقول لي إيه؟,/whw/ /e-llj/ /jʔwl/ /lj/ /ʔijh/,OK,OK,No,Yes,,,,
+EGY-050,895,Egyptian,ما فيش إقطاعية تاني خلاص.,/maː/ /fjʃ/ /ʔiʔtˤaːʕja/ /taːnj/ /xlaːsˤ/,OK,OK,No,Yes,,,,
+LEV-001,548,Levantine,أما العفو بغير موضوعه سيء يعني,/ʔmaː/ /ɪl-ʕfw/ /bɣjr/ /mwdˤwʕo/ /sjʔ/ /jʕnj/,OK,OK,No,Yes,,,,
+LEV-002,362,Levantine,بالوطن العربي هتكون كالتالي,/bɪl-wtˤn/ /ɪl-ʕrbj/ /htkwn/ /kɪ-ttaːlj/,OK,OK,No,Yes,,,,
+LEV-003,55,Levantine,صحيح اللي ماتوا بالمرتين,/sˤħjħ/ /ɪ-llj/ /maːtuː/ /bɪl-mrtjn/,OK,OK,No,Yes,,,,
+LEV-004,259,Levantine,على برامج البكالوروس ثم بال2013 على برامج الماجستير,/ʕlaː/ /braːmʒ/ /ɪl-bkaːlwrws/ /sm/ /baːl/ <num>2013</num> /ʕlaː/ /braːmʒ/ /ɪl-maːʒstjr/,Not OK,Not OK,No,No,Definite article,بال2013,/baːl/,/bɪl/
+LEV-005,379,Levantine,الدماغ كعضو هو من النوع الثاني غير قابل للترميم,/ɪ-ddmaːɣ/ /kʕdˤw/ /hw/ /mn/ /ɪ-nnwʕ/ /ɪ-ttaːnj/ /ɣjr/ /ʔaːbl/ /lɪ-ttrmjm/,OK,Not OK,Yes,Yes,,,,
+LEV-006,1454,Levantine,تقدر الان لا تشوف التلفزيون,/tʔdr/ /ɪl-ʔn/ /laː/ /tʃwf/ /ɪ-ttlfzjwn/,Not OK,OK,Yes,Yes,,,,
+LEV-007,350,Levantine,خاصة عندما تجيك الكريفينغ هاد,/xaːsˤa/ /ʕndmaː/ /tʒjk/ /ɪl-krjfjnɣ/ /haːd/,Not OK,Not OK,No,No,Foreign name or loanword,الكريفينغ,/ɪl-krjfjnɣ/,/ɪl-krjvnɡ/
+LEV-008,232,Levantine,او باجتماع مختلق,/ʔw/ /bʒtmaːʕ/ /mxtlʔ/,OK,OK,No,Yes,,,,
+LEV-009,430,Levantine,وحكى لي تقلقيش الدكتور بخير وهيو عماله وصل,/wħkaː/ /lj/ /tʔlʔjʃ/ /ɪ-ddktwr/ /bxjr/ /whjw/ /ʕmaːlo/ /wsˤl/,OK,OK,No,Yes,,,,
+LEV-010,133,Levantine,لما بنجي لنا نعمل جنس حقيقي,/lmaː/ /bnʒj/ /lnaː/ /nʕml/ /ʒns/ /ħʔjʔj/,OK,OK,No,Yes,,,,
+LEV-011,254,Levantine,وهيدا بيفسر سبب من أسباب الصمت,/whjdaː/ /bjfsr/ /sbb/ /mn/ /ʔsbaːb/ /ɪ-sˤsˤmt/,OK,OK,No,Yes,,,,
+LEV-012,586,Levantine,كان هذا العائق قدامي,/kaːn/ /haːzaː/ /ɪl-ʕaːʔʔ/ /ʔdaːmj/,OK,OK,No,Yes,,,,
+LEV-013,329,Levantine,الذين انشقوا معنا عن هذا النظام المجرم,/ɪ-ddjn/ /ʔnʃʔuː/ /mʕnaː/ /ʕn/ /haːzaː/ /ɪ-nnzˤaːm/ /ɪl-mʒrm/,Not OK,Not OK,No,No,Dialect consonant,الذين,/ɪ-ddjn/,/ɪ-llzjn/
+LEV-014,398,Levantine,لأنه كانت الأهالي لو استلمت جثة أولادها حتصور وحتنشر فضائع وتشويهات النظام,/lʔno/ /kaːnt/ /ɪl-ʔhaːlj/ /lw/ /ʔstlmt/ /ʒta/ /ʔwlaːdhaː/ /ħtsˤwr/ /wħtnʃr/ /fdˤaːʔʕ/ /wtʃwjhaːt/ /ɪ-nnzˤaːm/,Not OK,Not OK,No,No,Long vowel or lexical word,جثة,/ʒta/,/ʒsɪt/
+LEV-015,409,Levantine,لكن لا تستطيع الوقوف كثيرا,/laːkn/ /laː/ /tsttˤjʕ/ /ɪl-wʔwf/ /ktjran/,OK,OK,No,Yes,,,,
+LEV-016,11,Levantine,مش كل الاعمال العسكريّة,/mʃ/ /kl/ /ɪl-ʔʕmaːl/ /ɪl-ʕskrjja/,OK,OK,No,Yes,,,,
+LEV-017,647,Levantine,لترديها سوداء جرداء قحلاء صحراء مغفرة,/ltrdjhaː/ /swdaːʔ/ /ʒrdaːʔ/ /ʔħlaːʔ/ /sˤħraːʔ/ /mɣfra/,Not OK,OK,Yes,No,Dialect consonant,قحلاء,/ʔħlaːʔ/,/qħlaːʔ/
+LEV-018,113,Levantine,يعني نقلنا من أنه في سوريين هن اللي عم أو لبنانيين هن عم بيقاتلوا,/jʕnj/ /nʔlnaː/ /mn/ /ʔno/ /fj/ /swrjjn/ /hn/ /ɪ-llj/ /ʕm/ /ʔw/ /lbnaːnjjn/ /hn/ /ʕm/ /bjʔaːtluː/,OK,OK,No,Yes,,,,
+LEV-019,61,Levantine,إذا ما لحقت الطريقة الحلقة بتنحط بعد شوية على موقع تلفزيون المستقبل,/ʔizaː/ /maː/ /lħʔt/ /ɪ-tˤtˤrjʔa/ /ɪl-ħlʔa/ /btnħtˤ/ /bʕd/ /ʃwja/ /ʕlaː/ /mwʔʕ/ /tlfzjwn/ /ɪl-mstʔbl/,OK,OK,No,Yes,,,,
+LEV-020,22,Levantine,لأنك لو لم تحقق أهدافك الشخصية,/lʔnk/ /lw/ /lm/ /tħʔʔ/ /ʔhdaːfk/ /ɪ-ʃʃxsˤja/,OK,OK,No,Yes,,,,
+LEV-021,426,Levantine,وتأمينها طبيا بعد تجاوز أسوار السجن,/wtʔmjnhaː/ /tˤbjaː/ /bʕd/ /tʒaːwz/ /ʔswaːr/ /ɪ-ssʒn/,Not OK,Not OK,No,No,Long vowel or lexical word,طبيا,/tˤbjaː/,/tˤbjan/
+LEV-022,48,Levantine,بدل ما انت تروح تقنع الشركة,/bdl/ /maː/ /ʔnt/ /trwħ/ /tʔnʕ/ /ɪ-ʃʃrka/,OK,OK,No,Yes,,,,
+LEV-023,262,Levantine,و بيعت هناك,/w/ /bjʕt/ /hnaːk/,OK,OK,No,Yes,,,,
+LEV-024,317,Levantine,بالأردن أكد لك إنو,/bɪl-ʔrdn/ /ʔkd/ /lk/ /ʔinw/,OK,OK,No,Yes,,,,
+LEV-025,69,Levantine,كان أكتر بكثير من كل شي أنا وقت بذلته على التعلم,/kaːn/ /ʔktr/ /bktjr/ /mn/ /kl/ /ʃj/ /ʔnaː/ /wʔt/ /bdlto/ /ʕlaː/ /ɪ-ttʕlm/,Not OK,Not OK,No,No,Dialect consonant,بذلته,/bdlto/,/bzlto/
+LEV-026,335,Levantine,رغم أنه نجح,/rɣm/ /ʔno/ /nʒħ/,OK,OK,No,Yes,,,,
+LEV-027,115,Levantine,انا بدي اصير رسام,/ʔnaː/ /bdj/ /ʔsˤjr/ /rsaːm/,OK,OK,No,Yes,,,,
+LEV-028,58,Levantine,فيه ابدا طريقته الخاصة جدا يعني. طريقة النظام يعني التخويف,/fjh/ /ʔbdan/ /tˤrjʔto/ /ɪl-xaːsˤa/ /ʒdan/ /jʕnj/ /tˤrjʔɪt/ /ɪ-nnzˤaːm/ /jʕnj/ /ɪ-ttxwjf/,OK,OK,No,Yes,,,,
+LEV-029,295,Levantine,في تاريخ اه احداعش اربعة الفين واربعة وعشرين كان يوم العيد.,/fj/ /taːrjx/ /ʔh/ /ʔħdaːʕʃ/ /ʔrbʕɪt/ /ɪl-fjn/ /waːrbʕa/ /wʕʃrjn/ /kaːn/ /jwm/ /ɪl-ʕjd/,Not OK,Not OK,No,No,Definite article,الفين,/ɪl-fjn/,/ʔlfjn/
+LEV-030,316,Levantine,تبعية كيف تقيس دقة الاختبار,/tbʕja/ /kjf/ /tʔjs/ /dʔɪt/ /ɪl-xtbaːr/,OK,OK,No,Yes,,,,
+LEV-031,511,Levantine,في امتهان الكرامة,/fj/ /ʔmthaːn/ /ɪl-kraːma/,OK,OK,No,Yes,,,,
+LEV-032,128,Levantine,قد أولت هرباً من الجيش العربي السوري,/ʔd/ /ʔwlt/ /hrban/ /mn/ /ɪl-ʒjʃ/ /ɪl-ʕrbj/ /ɪ-sswrj/,OK,OK,No,Yes,,,,
+LEV-033,566,Levantine,إذا ما بستنوجت أنا بجيب لك إياها,/ʔizaː/ /maː/ /bstnwʒt/ /ʔnaː/ /bʒjb/ /lk/ /ʔijaːhaː/,OK,OK,No,Yes,,,,
+LEV-034,235,Levantine,وأم متمسكة بولادها بطريقة يعني نموذجية,/wʔm/ /mtmska/ /bwlaːdhaː/ /btˤrjʔa/ /jʕnj/ /nmwzʒja/,OK,OK,No,Yes,,,,
+LEV-035,164,Levantine,هذه المادة تحمي اللثة أكثر، وتجعلها أقوى، وتجعل لونها زهري,/haːzh/ /ɪl-maːda/ /tħmj/ /ɪ-llta/ /ʔktr/ /wtʒʕlhaː/ /ʔʔwaː/ /wtʒʕl/ /lwnhaː/ /zhrj/,Not OK,Not OK,No,No,Dialect consonant,اللثة,/ɪ-llta/,/ɪ-llsa/
+LEV-036,523,Levantine,لم أتحدث مثلا عن الأمراض,/lm/ /ʔtħdt/ /mslan/ /ʕn/ /ɪl-ʔmraːdˤ/,Not OK,Not OK,No,No,Dialect consonant,أتحدث,/ʔtħdt/,/ʔtħds/
+LEV-037,369,Levantine,الله يرحمه جميعاً,/allaːh/ /jrħmo/ /ʒmjʕan/,OK,OK,No,Yes,,,,
+LEV-038,328,Levantine,زي الاستثمار والأمراض,/zj/ /ɪl-stsmaːr/ /wɪl-ʔmraːdˤ/,OK,OK,No,Yes,,,,
+LEV-039,267,Levantine,أو الوصول إلى هذا الكتاب,/ʔw/ /ɪl-wsˤwl/ /ʔilaː/ /haːzaː/ /ɪl-ktaːb/,OK,OK,No,Yes,,,,
+LEV-040,101,Levantine,يحضر يعني بصراحة آآ عينة من آآ المواد المتفجرة والتي حتى قمنا,/jħdˤr/ /jʕnj/ /bsˤraːħa/ /ʔaːʔaː/ /ʕjna/ /mn/ /ʔaːʔaː/ /ɪl-mwaːd/ /ɪl-mtfʒra/ /wɪ-ttj/ /ħtaː/ /ʔmnaː/,Not OK,Not OK,No,No,Definite article,والتي,/wɪ-ttj/,/wɪ-lltj/
+LEV-041,155,Levantine,وإلاك مدري إيش,/wʔilaːk/ /mdrj/ /ʔijʃ/,OK,OK,No,Yes,,,,
+LEV-042,140,Levantine,فمنهم بدأت بذرة,/fmnhm/ /bdʔt/ /bdra/,Not OK,OK,Yes,Yes,,,,
+LEV-043,4,Levantine,حزينة إنه عم يعبر عن رأيه الشخصي عن رأيه الحزبي لكن باسم الدولة اللبنانية,/ħzjna/ /ʔino/ /ʕm/ /jʕbr/ /ʕn/ /rʔjh/ /ɪ-ʃʃxsˤj/ /ʕn/ /rʔjh/ /ɪl-ħzbj/ /laːkn/ /bsm/ /ɪ-ddwla/ /ɪ-llbnaːnja/,Not OK,Not OK,No,No,Long vowel or lexical word,رأيه,/rʔjh/,/rʔjo/
+LEV-044,14,Levantine,بس شو مناسبة هالكلام هل عم يقول إنه موقف الوزير منصور بيتعارض مع سياسة النقي بالنفس,/bs/ /ʃw/ /mnaːsba/ /haːlklaːm/ /hl/ /ʕm/ /jʔwl/ /ʔino/ /mwʔf/ /ɪl-wzjr/ /mnsˤwr/ /bjtʕaːrdˤ/ /mʕ/ /sjaːsɪt/ /ɪ-nnʔj/ /bɪ-nnfs/,Not OK,Not OK,No,No,Long vowel or lexical word,مناسبة,/mnaːsba/,/mnaːsbɪt/
+LEV-045,73,Levantine,إذاً المشكلة الأساسية بالمدينة هو الشيخ أحمد الأسير,/ʔizan/ /ɪl-mʃkla/ /ɪl-ʔsaːsja/ /bɪl-mdjna/ /hw/ /ɪ-ʃʃjx/ /ʔħmd/ /ɪl-ʔsjr/,OK,OK,No,Yes,,,,
+LEV-046,1250,Levantine,ومن جهد البلاء,/wmn/ /ʒhd/ /ɪl-blaːʔ/,OK,OK,No,Yes,,,,
+LEV-047,296,Levantine,لما كنا نشوف الإخوة,/lmaː/ /knaː/ /nʃwf/ /ɪl-ʔixwa/,OK,OK,No,Yes,,,,
+LEV-048,424,Levantine,وكانت المستشفى مليانة,/wkaːnt/ /ɪl-mstʃfaː/ /mljaːna/,OK,OK,No,Yes,,,,
+LEV-049,348,Levantine,خلص أنت فاقد هاي الشغلات,/xlsˤ/ /ʔnt/ /faːʔd/ /haːj/ /ɪ-ʃʃɣlaːt/,OK,OK,No,Yes,,,,
+LEV-050,201,Levantine,فيصل الكرامي عائلة سياسية عريقة,/fjsˤl/ /ɪl-kraːmj/ /ʕaːʔla/ /sjaːsja/ /ʕrjʔa/,OK,OK,No,Yes,,,,
+GLF-001,79,Gulf,أخر شخصية رح نتكلم عنها وهي شخصية بوباي رجل البحار,/ʔxr/ /ʃxsˤja/ /rħ/ /ntklm/ /ʕnhaː/ /whj/ /ʃxsˤja/ /bwbaːj/ /rdʒl/ /ɪl-bħaːr/,Not OK,Not OK,No,No,Long vowel or lexical word,شخصية,/ʃxsˤja/,/ʃxsˤjat/
+GLF-002,103,Gulf,أنها لا تنطبق إلا على السايكوباتيين,/ʔnhaː/ /laː/ /tntˤbɡ/ /ʔilaː/ /ʕlaː/ /ɪ-ssaːjkwbaːtjjn/,OK,Not OK,Yes,Yes,,,,
+GLF-003,510,Gulf,والشاهد أنه لم يقدم أي مبرر,/wɪ-ʃʃaːhd/ /ʔnh/ /lm/ /jɡdm/ /ʔj/ /mbrr/,OK,OK,No,Yes,,,,
+GLF-004,242,Gulf,و كله يعرف يستخدم مايكروسوفت,/w/ /klh/ /jʕrf/ /jstxdm/ /maːjkrwswft/,OK,OK,No,Yes,,,,
+GLF-005,223,Gulf,إذا تسمح لي أخذ من وقتك شيء بسيط أروح أخذها واجي,/ʔiðaː/ /tsmħ/ /lj/ /ʔxð/ /mn/ /wɡtk/ /ʃjʔ/ /bsjtˤ/ /ʔrwħ/ /ʔxðhaː/ /waːdʒj/,OK,OK,No,Yes,,,,
+GLF-006,268,Gulf,لما تصل لمرحلة من التشتت ما تقدر تمارس حياتك,/lmaː/ /tsˤl/ /lmrħla/ /mn/ /ɪ-ttʃtt/ /maː/ /tɡdr/ /tmaːrs/ /ħjaːtk/,OK,OK,No,Yes,,,,
+GLF-007,663,Gulf,تخيل حاول يزرع هذه الفكرة,/txjl/ /ħaːwl/ /jzrʕ/ /haːðh/ /ɪl-fkra/,OK,OK,No,Yes,,,,
+GLF-008,1039,Gulf,في واحد يأكل 2000 سعره عبارة عن,/fj/ /waːħd/ /jʔkl/ <num>2000</num> /sʕrh/ /ʕbaːra/ /ʕn/,Not OK,Not OK,No,No,Long vowel or lexical word,سعره,/sʕrh/,/sʕra/
+GLF-009,255,Gulf,تحب نفسك فعلا و ليس قولا. كيف احب نفسي فعلا؟,/tħb/ /nfsk/ /fʕlan/ /w/ /ljs/ /ɡwlaː/ /kjf/ /ʔħb/ /nfsj/ /fʕlan/,Not OK,Not OK,No,No,Long vowel or lexical word,قولا.,/ɡwlaː/,/ɡwlan/
+GLF-010,832,Gulf,اوه اكتشفت أنه فلان سايكوباثي لا لا لا,/ʔwh/ /ʔktʃft/ /ʔnh/ /flaːn/ /saːjkwbaːθj/ /laː/ /laː/ /laː/,OK,OK,No,Yes,,,,
+GLF-011,197,Gulf,أنا فاهم وش الامتنان حرفيا,/ʔnaː/ /faːhm/ /wʃ/ /ɪl-mtnaːn/ /ħrfjan/,OK,OK,No,Yes,,,,
+GLF-012,324,Gulf,قد يكونون صح ناقصين,/ɡd/ /jkwnwn/ /sˤħ/ /naːɡsˤjn/,OK,OK,No,Yes,,,,
+GLF-013,468,Gulf,قصة لقاء فتاة البرتقال,/ɡsˤa/ /lɡaːʔ/ /ftaːt/ /ɪl-brtɡaːl/,Not OK,Not OK,No,No,Long vowel or lexical word,قصة,/ɡsˤa/,/ɡsˤat/
+GLF-014,13,Gulf,وأنه كيف ممكن أنا أفكر بهذه الطريقة يعني,/wʔnh/ /kjf/ /mmkn/ /ʔnaː/ /ʔfkr/ /bhðh/ /ɪ-tˤtˤrjɡa/ /jʕnj/,Not OK,OK,Yes,No,Long vowel or lexical word,بهذه,/bhðh/,/bhaːðh/
+GLF-015,115,Gulf,وكان يقول إنه يقدر يسافر لمسافات طويلة,/wkaːn/ /jɡwl/ /ʔinh/ /jɡdr/ /jsaːfr/ /lmsaːfaːt/ /tˤwjla/,OK,OK,No,Yes,,,,
+GLF-016,127,Gulf,فمثل ما قلت لك تلقاهم مثلا نسخوها من العالم الغربي,/fmθl/ /maː/ /ɡlt/ /lk/ /tlɡaːhm/ /mθlan/ /nsxwhaː/ /mn/ /ɪl-ʕaːlm/ /ɪl-ɣrbj/,OK,OK,No,Yes,,,,
+GLF-017,217,Gulf,سمح لي أقترح عنك,/smħ/ /lj/ /ʔɡtrħ/ /ʕnk/,OK,OK,No,Yes,,,,
+GLF-018,853,Gulf,ليش؟ لأنه كان ينفق,/ljʃ/ /lʔnh/ /kaːn/ /jnfɡ/,OK,OK,No,Yes,,,,
+GLF-019,37,Gulf,ومحاولة كسب ود الآخرين دائما,/wmħaːwla/ /ksb/ /wd/ /ɪl-ʔaːxrjn/ /daːʔman/,Not OK,Not OK,No,No,Long vowel or lexical word,ومحاولة,/wmħaːwla/,/wmħaːwlat/
+GLF-020,200,Gulf,حرفياً لا يمكن أن تقنعني أن هذا الصديق,/ħrfjan/ /laː/ /jmkn/ /ʔn/ /tɡnʕnj/ /ʔn/ /haːðaː/ /ɪ-sˤsˤdjɡ/,OK,OK,No,Yes,,,,
+GLF-021,505,Gulf,هو كان يتكلم عن أنه بنصنع,/hw/ /kaːn/ /jtklm/ /ʕn/ /ʔnh/ /bnsˤnʕ/,OK,OK,No,Yes,,,,
+GLF-022,544,Gulf,جراند كاردون ممكن يكون من الناس هذولي,/dʒraːnd/ /kaːrdwn/ /mmkn/ /jkwn/ /mn/ /ɪ-nnaːs/ /hðwlj/,Not OK,Not OK,No,No,Foreign name or loanword,جراند,/dʒraːnd/,/ɡraːnd/
+GLF-023,728,Gulf,اللي فعلا كان متوقف عندهم,/ɪ-llj/ /fʕlan/ /kaːn/ /mtwɡf/ /ʕndhm/,OK,OK,No,Yes,,,,
+GLF-024,273,Gulf,لا النعمة هو انو لما يكون,/laː/ /ɪ-nnʕma/ /hw/ /ʔnw/ /lmaː/ /jkwn/,OK,OK,No,Yes,,,,
+GLF-025,103,Gulf,ما رح أحرق عليكم بس نهاية الجزء التاني سعيدة أكتر بمليون مرة من الجزء الأول,/maː/ /rħ/ /ʔħrɡ/ /ʕljkm/ /bs/ /nhaːjat/ /ɪl-dʒzʔ/ /ɪ-ttaːnj/ /sʕjda/ /ʔktr/ /bmljwn/ /mra/ /mn/ /ɪl-dʒzʔ/ /ɪl-ʔwl/,OK,Not OK,Yes,Yes,,,,
+GLF-026,213,Gulf,في ذلك المكان,/fj/ /ðaːlk/ /ɪl-mkaːn/,OK,OK,No,Yes,,,,
+GLF-027,71,Gulf,نصمت لدقائق طويلة,/nsˤmt/ /ldɡaːʔɡ/ /tˤwjla/,OK,OK,No,Yes,,,,
+GLF-028,190,Gulf,ويسمع صوت القفل,/wjsmʕ/ /sˤwt/ /ɪl-ɡfl/,OK,OK,No,Yes,,,,
+GLF-029,567,Gulf,تراني أقرأ كومنتات,/traːnj/ /ʔɡrʔ/ /kwmntaːt/,OK,OK,No,Yes,,,,
+GLF-030,235,Gulf,اللي ما يمكن تستغني عنه,/ɪ-llj/ /maː/ /jmkn/ /tstɣnj/ /ʕnh/,OK,OK,No,Yes,,,,
+GLF-031,24,Gulf,وفي نهاية اليوم عدت إلى وسادتي وغرقت في انتباهي,/wfj/ /nhaːjat/ /ɪl-jwm/ /ʕdt/ /ʔilaː/ /wsaːdtj/ /wɣrɡt/ /fj/ /ʔntbaːhj/,OK,OK,No,Yes,,,,
+GLF-032,441,Gulf,فتقول لما ركبت,/ftɡwl/ /lmaː/ /rkbt/,OK,OK,No,Yes,,,,
+GLF-033,106,Gulf,وإدراك الكامل بمكان هذا الطريق,/wʔidraːk/ /ɪl-kaːml/ /bmkaːn/ /haːðaː/ /ɪ-tˤtˤrjɡ/,OK,OK,No,Yes,,,,
+GLF-034,256,Gulf,ويزيد عندك الدافع,/wjzjd/ /ʕndk/ /ɪ-ddaːfʕ/,OK,OK,No,Yes,,,,
+GLF-035,150,Gulf,أثبتت أن البيت هذا أساساً تم بناءه بعد 20 سنة من إعدام ريا وسكينة,/ʔθbtt/ /ʔn/ /ɪl-bjt/ /haːðaː/ /ʔsaːsan/ /tm/ /bnaːʔh/ /bʕd/ <num>20</num> /sna/ /mn/ /ʔiʕdaːm/ /rjaː/ /wskjna/,OK,OK,No,Yes,,,,
+GLF-036,36,Gulf,حين وجدت الإجابة سريعا,/ħjn/ /wdʒdt/ /ɪl-ʔidʒaːba/ /srjʕan/,OK,OK,No,Yes,,,,
+GLF-037,76,Gulf,اللي داخلة نفس هذا المجال,/ɪ-llj/ /daːxla/ /nfs/ /haːðaː/ /ɪl-mdʒaːl/,OK,OK,No,Yes,,,,
+GLF-038,609,Gulf,حرفيا يا صديقي الجميل التزاماتي الشهرية عالية جدا,/ħrfjan/ /jaː/ /sˤdjɡj/ /ɪl-dʒmjl/ /ɪ-ttzaːmaːtj/ /ɪ-ʃʃhrja/ /ʕaːlja/ /dʒdan/,Not OK,Not OK,No,No,Definite article,التزاماتي,/ɪ-ttzaːmaːtj/,/ʔltzaːmaːtj/
+GLF-039,178,Gulf,وغيرها اختيار محتاج لتنازلات أكبر وأكبر,/wɣjrhaː/ /ʔxtjaːr/ /mħtaːdʒ/ /ltnaːzlaːt/ /ʔkbr/ /wʔkbr/,OK,OK,No,Yes,,,,
+GLF-040,58,Gulf,والجدة شافت إنه كان فيه شخص ثاني يسوق الشاحنة,/wɪl-dʒda/ /ʃaːft/ /ʔinh/ /kaːn/ /fjh/ /ʃxsˤ/ /θaːnj/ /jswɡ/ /ɪ-ʃʃaːħna/,OK,OK,No,Yes,,,,
+GLF-041,210,Gulf,ثقة الشخص أنك تشارك تجاربك الشخصية,/θɡat/ /ɪ-ʃʃxsˤ/ /ʔnk/ /tʃaːrk/ /tdʒaːrbk/ /ɪ-ʃʃxsˤja/,OK,OK,No,Yes,,,,
+GLF-042,6,Gulf,فقلت أبغى أحاول أعطيه إيش؟,/fɡlt/ /ʔbɣaː/ /ʔħaːwl/ /ʔʕtˤjh/ /ʔijʃ/,OK,OK,No,Yes,,,,
+GLF-043,35,Gulf,يعني بيتر بان في القصة الأصية كان يختطف الأطفال اللي موجودين في أرض الأحلام,/jʕnj/ /bjtr/ /baːn/ /fj/ /ɪl-ɡsˤa/ /ɪl-ʔsˤja/ /kaːn/ /jxttˤf/ /ɪl-ʔtˤfaːl/ /ɪ-llj/ /mwdʒwdjn/ /fj/ /ʔrðˤ/ /ɪl-ʔħlaːm/,OK,OK,No,Yes,,,,
+GLF-044,1,Gulf,وفيها يتكلمون عن حكايات ديزني نفسها,/wfjhaː/ /jtklmwn/ /ʕn/ /ħkaːjaːt/ /djznj/ /nfshaː/,OK,OK,No,Yes,,,,
+GLF-045,212,Gulf,لا أبغى فلوس كثيرة,/laː/ /ʔbɣaː/ /flws/ /kθjra/,OK,OK,No,Yes,,,,
+GLF-046,349,Gulf,ما كان يقول له والله انت حياتك مهمة,/maː/ /kaːn/ /jɡwl/ /lh/ /wallaːh/ /ʔnt/ /ħjaːtk/ /mhma/,OK,OK,No,Yes,,,,
+GLF-047,309,Gulf,مدتها نصف ساعة,/mdthaː/ /nsˤf/ /saːʕa/,OK,OK,No,Yes,,,,
+GLF-048,32,Gulf,في المقابلة المذيع يسألوا أسئلة عن السفر عبر الزمن,/fj/ /ɪl-mɡaːbla/ /ɪl-mðjʕ/ /jsʔluː/ /ʔsʔla/ /ʕn/ /ɪ-ssfr/ /ʕbr/ /ɪ-zzmn/,OK,OK,No,Yes,,,,
+GLF-049,386,Gulf,ولا مسوي حركة ما تبغى أحد يعرفها,/wlaː/ /mswj/ /ħrka/ /maː/ /tbɣaː/ /ʔħd/ /jʕrfhaː/,OK,OK,No,Yes,,,,
+GLF-050,759,Gulf,قدمته الدكتورة انا,/ɡdmth/ /ɪ-ddktwra/ /ʔnaː/,OK,OK,No,Yes,,,,
