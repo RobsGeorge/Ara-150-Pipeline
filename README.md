@@ -6,7 +6,7 @@
 [![Dataset License](https://img.shields.io/badge/Corpus-CC--BY--NC--SA%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-Ara--150-orange)](https://huggingface.co/datasets/robsgeorge/Ara_150_Multi_Dialect_TTS)
 [![Tests](https://img.shields.io/badge/G2P%20tests-118%2F118%20passing-brightgreen)]()
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)]()
+[![Python](https://img.shields.io/badge/tested%20with-Python%203.13-blue)]()
 
 **Ara-150** is a ~152-hour multi-dialect Arabic speech corpus designed for
 Text-to-Speech (TTS) research, accompanied by an automated processing pipeline
@@ -79,10 +79,16 @@ print(transcribe_protected("الليل والنهار", "Egyptian"))
 print(transcribe_protected("قال المدرس", "Khaliji Arabic"))
 # → /ɡaːl/ /ɪl-mdrs/
 
-# With diacritization (requires: pip install camel-tools)
-from g2p.diacritize_then_g2p import main
-# or: python g2p/diacritize_then_g2p.py --text "مَدْرَسَة" --dialect MSA --backend camel
+# Diacritized input: short vowels are realized as written
+print(transcribe_protected("مَدْرَسَة", "Modern Standard Arabic (MSA)"))
 # → /madrasa/
+```
+
+With automatic diacritization (requires `pip install camel-tools` and its MSA model):
+
+```bash
+python g2p/diacritize_then_g2p.py --text "مدرسة" --dialect MSA --backend camel
+# → /madrasati/   (CAMeL Tools restores the MSA case ending)
 ```
 
 Supported dialects: `"Egyptian"` · `"Khaliji Arabic"` · `"Levantine Arabic"` · `"Modern Standard Arabic (MSA)"`
@@ -109,7 +115,7 @@ Open the notebooks in Google Colab (recommended) or JupyterLab in order:
 | 2 | `02_metadata_and_phonemization.ipynb` | Clips + transcripts | `metadata_with_phonemes.csv` |
 | 3 | `03_dataset_consolidation.ipynb` | Per-speaker CSVs | `master_metadata.csv` |
 
-Set `GOOGLE_DRIVE_PATH` at the top of each notebook to your Drive folder.
+Each notebook mounts Google Drive; edit the Drive paths in its first cells (e.g. `DB_ROOT`) to point to your own folders.
 
 ---
 
@@ -214,7 +220,7 @@ If you use Ara-150 or AraForge in your research, please cite:
   note      = {In submission}
 }
 
-@software{basily2026g2p_v16,
+@misc{basily2026g2p_v16,
   author    = {Robeir Basily and Cherif Salama and Mahmoud Khalil},
   title     = {{Ara-150-Pipeline}: AraForge pipeline and dialect-aware {A}rabic G2P engine},
   version   = {1.6},
