@@ -13,11 +13,12 @@ selection script are in the repository folder `g2p/human_eval/` (`sentences.csv`
 | `annotator_*.xlsx` | The six annotation workbooks, including the annotation guide (Instructions sheet). |
 | `G2P_human_evaluation_150.xlsx` | The adjudication workbook: both annotators' judgments and structured error details, the adjudication, and the final judgment. |
 
-The judgments are as returned by the annotators. Before release, the spelling of the workbooks'
-text and their formatting were corrected with a generative AI tool (see the paper's statement on
-generative AI); the judgments were not changed. The annotators' free-text notes and the
-adjudication notes are not released (those columns are empty), and file properties (author,
-editor, dates) were cleared. The files are produced from the completed workbooks by
+The judgments are as returned by the annotators. Before release, the spelling of the annotators'
+free-text notes and the formatting of the returned workbooks were corrected with a generative AI
+tool (see the paper's statement on generative AI); the judgments were not changed. In the
+judgments table, punctuation at the edges of a quoted wrong word is removed (قولا. -> قولا).
+The annotators' free-text notes and the adjudication notes are not released (those columns are
+empty), and the author and editor file properties were cleared. The files are produced from the completed workbooks by
 `g2p/human_eval/publish_annotations.py`.
 
 Results (from `paper/build_human_eval.py`): 122 of 150 sentences judged correct (81.3%,
