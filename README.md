@@ -153,6 +153,18 @@ annotator (`annotator_EGY-A.xlsx` ... `annotator_GLF-B.xlsx`, guide in English a
 Arabic) and the adjudication workbook. `merge_annotations.py` merges the six files into the
 adjudication workbook; `build_workbook.py` rebuilds all of them from `sentences.csv`.
 
+`g2p/human_eval/annotations/` holds the completed evaluation: the per-sentence judgments of
+both annotators with the adjudicated result and error details (`judgments_150.csv`/`.xlsx`),
+and the seven workbooks with the free-text notes removed (see its README). Result: 122 of 150
+sentences judged correct (81.3%, 95% Wilson interval 74.3-86.8), Cohen's kappa 0.79.
+
+## Version used in the AJSE paper
+
+The results of *Rule-Based Phonemization for Arabic Dialects* were produced with engine
+commit `c9fd7c0`, archived unchanged together with the human-evaluation judgments as release
+**v1.6.0**: https://doi.org/10.5281/zenodo.23979713. Later commits on `main` may change the
+engine's output.
+
 ## Dataset download
 
 The corpus (audio + metadata) is hosted on Hugging Face:
