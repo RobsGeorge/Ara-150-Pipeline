@@ -174,6 +174,54 @@ results.append(t('ال"يوتيوب', E, must_equal="/el-jwtjwb/"))             
 results.append(t("وسوا", E, must_equal="/wswaː/"))                       # not a plural ending
 results.append(t("الاسطوانة", E, must_equal="/el-ʔstˤwaːna/"))           # hamzat al-qaṭʿ
 
+print("\n== v1.7: errors found in the human evaluation of v1.6 (one test per error) ==")
+G = "Khaliji Arabic"
+HE = [("ولكن", E, "/wlaːkn/"), ("ينبه", E, "/jnbh/"), ("تنقذه", E, "/tnʔzu/"), ("ذوات", E, "/zwaːt/"),
+      ("رأيه", E, "/ɾʔju/"), ("الڨيديو", E, "/el-vjdjw/"), ("التقاء", E, "/ʔltʔaːʔ/"),
+      ("بال2013", L, "/bɪl-/ <num>2013</num>"), ("الكريفينغ", L, "/ɪl-krjfjnɡ/"), ("الذين", L, "/ɪ-llzjn/"),
+      ("جثة أولادها", L, "/ʒsɪt/ /ʔwlaːdhaː/"), ("قحلاء", L, "/qħlaːʔ/"), ("طبيا", L, "/tˤbjan/"),
+      ("بذلته", L, "/bzlto/"), ("الفين", L, "/ʔlfjn/"), ("اللثة", L, "/ɪ-llsa/"), ("أتحدث", L, "/ʔtħds/"),
+      ("والتي", L, "/wɪ-lltj/"), ("رأيه", L, "/rʔjo/"), ("مناسبة هالكلام", L, "/mnaːsbɪt/ /haːlklaːm/"),
+      ("2000 سعره", G, "<num>2000</num> /sʕra/"), ("قولا.", G, "/ɡwlan/"), ("بهذه", G, "/bhaːðh/"),
+      ("جراند", G, "/ɡraːnd/"), ("التزاماتي", G, "/ʔltzaːmaːtj/"), ("واربعة", L, "/wʔrbʕa/")]
+for w, d, e in HE:
+    results.append(t(w, d, must_equal=e))
+
+print("\n== v1.7: regression traps ==")
+results.append(t("التفاصيل", E, must_equal="/e-ttfaːsˤjl/"))          # article + ت: not Form VIII
+results.append(t("التفكير", E, must_equal="/e-ttfkjɾ/"))
+results.append(t("التحقيق", E, must_equal="/e-ttħʔjʔ/"))
+results.append(t("التمساح", E, must_equal="/e-ttmsaːħ/"))
+results.append(t("التماسك", E, must_equal="/e-ttmaːsk/"))              # al-tamāsuk, not iltimās + -k
+results.append(t("الالتزام", E, must_equal="/el-ltzaːm/"))              # article + Form VIII: waṣl
+results.append(t("والتزم", E, must_equal="/wltzm/"))
+results.append(t("فيه", E, must_equal="/fjh/"))                        # long vowel before ه: unchanged
+results.append(t("جوه", E, must_equal="/ɡwh/"))                        # Egyptian gowwa: not a diphthong stem
+results.append(t("زيه", E, must_equal="/zju/"))
+results.append(t("سعره", E, must_equal="/sʕɾu/"))                      # "its price" (no numeral)
+results.append(t("10 جنيه", E, must_equal="<num>10</num> /ɡnjh/"))     # numeral context does not touch other words
+results.append(t("41 سنه", E, must_equal="<num>41</num> /sna/"))
+results.append(t("وسنه", E, must_equal="/wsnu/"))                      # "and his age"
+results.append(t("سنّه", E, must_equal="/snnu/"))
+results.append(t("مره", G, must_equal="/mra/"))
+results.append(t("وهذا", M, must_equal="/whaːðaː/"))
+results.append(t("لذلك", M, must_equal="/lðaːlk/"))
+results.append(t("الذي", E, must_equal="/e-llzj/"))
+results.append(t("الذي", M, must_equal="/a-llðj/"))
+results.append(t("اللي", E, must_equal="/e-llj/"))                     # dialect relative: unchanged
+results.append(t("بال", E, must_equal="/baːl/"))                       # "mind": no shielded span follows
+results.append(t("والAI", L, must_equal="/wɪl-/ <eng>AI</eng>"))
+results.append(t("وانا", E, must_equal="/wʔnaː/"))
+results.append(t("واحد", E, must_equal="/waːħd/"))
+results.append(t("واستخدم", E, must_equal="/wstxdm/"))                 # Form X perfect after و: waṣl
+results.append(t("واستاذة", E, must_equal="/waːstaːza/"))              # أستاذة: not Form X (unchanged)
+results.append(t("كاستانيدا", E, must_equal="/kaːstaːnjdaː/"))         # name: no waṣl after ك
+results.append(t("القرآن", E, must_equal="/el-qɾʔaːn/"))
+results.append(t("كينغ", G, must_equal="/kjnɡ/"))
+results.append(t("الڨيديو", G, must_equal="/ɪl-ɡjdjw/"))               # Gulf/MSA keep ڨ /ɡ/
+results.append(t("مسألة هالقد", L, must_equal="/msʔla/ /haːlʔd/"))     # هالقد "this much": no construct
+results.append(t("قصة التهابات", E, must_equal="/ʔsˤet/ /ʔlthaːbaːt/"))  # construct before a verbal noun kept
+
 passed=sum(1 for r in results if r); total=len(results)
 print(f"\n==== {passed}/{total} tests passed ====")
 import sys; sys.exit(0 if passed==total else 1)
