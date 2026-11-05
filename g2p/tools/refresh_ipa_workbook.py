@@ -78,5 +78,6 @@ fails = sum(1 for r in range(2, ev.max_row + 1) if ev.cell(r, cs).value == "FAIL
 for r in range(2, ev.max_row + 1):                            # summary row
     if ev.cell(r, 1).value == "TOTAL":
         ev.cell(r, cs).value = "ALL PASS" if not fails else f"{fails} FAIL"
-wb.save(PATH)
+if changed:                                                   # leave the file untouched otherwise
+    wb.save(PATH)
 print(f"{changed} cells updated; Engine_Validation failures: {fails}")
