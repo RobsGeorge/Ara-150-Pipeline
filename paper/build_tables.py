@@ -15,7 +15,15 @@ from pathlib import Path
 
 G2P = Path(sys.argv[1]).resolve()
 ENGINE_COMMIT = sys.argv[2] if len(sys.argv) > 2 else "HEAD"
-if subprocess.run(["git", "diff", "--quiet", ENGINE_COMMIT, "HEAD", "--", "arabic_g2p_rules.py", "data"], cwd=G2P).returncode:
+# SHA-256 of the engine and data splits used in the paper (engine commit c9fd7c0); checked also
+# where no git history is available (e.g. a Zenodo archive), and against the working tree.
+import hashlib  # noqa: E402
+PAPER_SHA256 = {"arabic_g2p_rules.py": "02ca9761b703c4cad2420251ab4b088cdf2981a653f8be53a303ddf7ae7cac4e", "data/test_split.csv": "50c97a0cf5d235cd9ffa42c907b15107036fffdaf6afe0be393d77a5372b1d16", "data/dev_split.csv": "5de50370085c578b102ad995601c7c1fbef0f541476850ab3a8b36e0b4a91b34"}
+for rel, digest in PAPER_SHA256.items():
+    if hashlib.sha256((G2P / rel).read_bytes()).hexdigest() != digest:
+        sys.exit(f"{rel} differs from the version used in the paper")
+if (G2P.parent / ".git").exists() and subprocess.run(
+        ["git", "diff", "--quiet", ENGINE_COMMIT, "--", "arabic_g2p_rules.py", "data"], cwd=G2P).returncode:
     sys.exit(f"engine or data differ from {ENGINE_COMMIT}")
 sys.path.insert(0, str(G2P))
 from arabic_g2p_rules import (IPA_RULES, arabic_words, is_article,  # noqa: E402
@@ -160,7 +168,8 @@ macros.update({
     "NLearnedLex": fmt(len(LEARNED)), "NHRoot": fmt(len(H_ROOT)),
     "NLexEntries": fmt(len(IPA_RULES["dialects"]["Egyptian"]["letters"]) + 1),   # + Alif maqṣūra
     "NNonArt": fmt(sum(int(r["Applicable"]) for r in rows if r["Measure"] == "Non-article control")),
-    "EngineCommit": subprocess.run(["git", "rev-parse", "--short", ENGINE_COMMIT], cwd=G2P, capture_output=True, text=True).stdout.strip(),
+    "EngineCommit": subprocess.run(["git", "rev-parse", "--short", ENGINE_COMMIT], cwd=G2P, capture_output=True,
+                                   text=True).stdout.strip() or ENGINE_COMMIT,
     "NNonArtCorrect": fmt(sum(int(r["Correct"]) for r in rows if r["Measure"] == "Non-article control")),
     "EnginePRs": "5", "NTanwinLex": fmt(len(TANWIN_ADV)), "NNotArticle": fmt(len(NOT_ARTICLE)),
     "NRelPron": fmt(relpron),
@@ -171,9 +180,9 @@ for d in ("EGY", "LEV", "GLF"):
     macros[f"BaseTok{d}"] = f"{100 * base_tok[d][0] / base_tok[d][1]:.1f}"
     macros[f"BaseSent{d}"] = f"{100 * base_sent[d][0] / base_sent[d][1]:.1f}"
 # test-suite size and self-test checks, read from the scripts' own output
-tests = subprocess.run([sys.executable, "test_arabic_g2p.py"], cwd=G2P, capture_output=True, text=True).stdout
+tests = subprocess.run([sys.executable, "-I", "test_arabic_g2p.py"], cwd=G2P, capture_output=True, text=True).stdout
 macros["NTests"] = tests.strip().splitlines()[-1].split()[1].split("/")[1]
-st = subprocess.run([sys.executable, "regenerate_table3.py", "--self-test"], cwd=G2P, capture_output=True, text=True).stdout
+st = subprocess.run([sys.executable, "-I", "regenerate_table3.py", "--self-test"], cwd=G2P, capture_output=True, text=True).stdout
 macros["NSelfTest"] = str(sum(1 for l in st.splitlines() if l.strip().startswith("[PASS]")))
 assert "PASSED" in st, "self-test failed"
 
