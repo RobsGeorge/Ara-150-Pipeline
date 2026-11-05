@@ -30,6 +30,11 @@ def clean(x):
     return " ".join(x.split()) if isinstance(x, str) else x
 
 
+def edge(word):
+    """Strip punctuation at the edges of a quoted word (قولا. -> قولا)."""
+    return word.strip(".,;:!?،؛؟\"'()[]«» ")
+
+
 def scrub_props(wb):
     p = wb.properties
     p.creator = "Ara-150 G2P study"
@@ -81,7 +86,8 @@ for r in range(2, ws.max_row + 1):
     ws[f"N{r}"] = final
     rows.append([item, ws[f"S{r}"].value, ws[f"C{r}"].value, ws[f"D{r}"].value, ws[f"E{r}"].value, a, b,
                  "Yes" if a != b else "No", final] +
-                ([clean(ws[f"{c}{r}"].value) or "" for c in "OPQR"] if final == "No" else ["", "", "", ""]))
+                ([edge(clean(ws[f"{c}{r}"].value) or "") if c == "P" else clean(ws[f"{c}{r}"].value) or ""
+                  for c in "OPQR"] if final == "No" else ["", "", "", ""]))
 scrub_props(wb)
 wb.save(OUT / name)
 
