@@ -41,6 +41,9 @@ import argparse
 import csv
 import sys
 from collections import defaultdict
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # also under python -I
 
 from arabic_g2p_rules import (ARTICLE, IPA_RULES, MOON_LETTERS, SUN_LETTERS,
                               arabic_words, strip_diacritics, transcribe_word_aligned)

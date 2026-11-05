@@ -1,5 +1,7 @@
 """Emit the qualitative-comparison table rows (Table 3) directly from the engine.
 Both columns come from the same engine: the MSA ruleset and the dialect ruleset."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # also under python -I
 from arabic_g2p_rules import transcribe_protected as T
 
 MSA = "Modern Standard Arabic (MSA)"
