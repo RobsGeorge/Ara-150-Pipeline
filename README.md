@@ -39,19 +39,26 @@ Text-to-Speech (TTS) research, accompanied by an automated processing pipeline
 ```
 Ara-150-Pipeline/
 │
-├── notebooks/
+├── pipeline_notebooks/
 │   ├── 01_ingestion_and_processing.ipynb     # Whisper + VAD + segmentation
 │   ├── 02_metadata_and_phonemization.ipynb   # G2P + ECAPA-TDNN speaker clustering
-│   └── 03_dataset_consolidation.ipynb        # Final merge + quality filtering
+│   ├── 03_dataset_consolidation.ipynb        # Final merge + quality filtering
+│   └── Phonemization_demo.ipynb              # G2P demo
 │
 ├── g2p/
-│   ├── arabic_g2p_rules.py      # Core G2P engine (4 dialects, 67-test suite)
-│   ├── test_arabic_g2p.py       # Validation: run `python test_arabic_g2p.py`
+│   ├── arabic_g2p_rules.py      # Core G2P engine (4 dialects)
+│   ├── test_arabic_g2p.py       # 118 tests: run `python g2p/test_arabic_g2p.py`
 │   ├── diacritize_then_g2p.py   # Full-IPA pipeline (CAMeL Tools / Mishkal)
-│   ├── regenerate_table3.py     # Recompute marker table from any test CSV
-│   ├── fleiss_kappa.py          # Inter-annotator agreement computation
-│   └── IPA_Phonemes.xlsx        # Machine-readable IPA mapping lexicon (10 sheets)
+│   ├── regenerate_table3.py     # Occurrence-level scorer (DMA, article checks, self-test)
+│   ├── make_table3_rows.py      # Qualitative examples (Table 4 of the paper)
+│   ├── IPA_Phonemes.xlsx        # IPA reference workbook (mapping, rules, worked examples)
+│   ├── tools/                   # refresh_ipa_workbook.py
+│   ├── data/                    # test and development splits
+│   ├── results/                 # scorer and example outputs
+│   └── human_eval/              # sample, workbooks, released judgments (annotations/)
 │
+├── paper/                       # scripts that generate the paper's numbers and tables
+├── Phonemization.ipynb          # G2P notebook
 ├── README.md
 ├── LICENSE                      # MIT (code)
 ├── requirements.txt
@@ -67,10 +74,10 @@ from g2p.arabic_g2p_rules import transcribe_protected
 
 # Single sentence
 print(transcribe_protected("الليل والنهار", "Egyptian"))
-# → /e-lljl/ /welnahaːɾ/
+# → /e-lljl/ /we-nnhaːɾ/
 
 print(transcribe_protected("قال المدرس", "Khaliji Arabic"))
-# → /gaːl/ /ɪl-mdrsk/
+# → /ɡaːl/ /ɪl-mdrs/
 
 # With diacritization (requires: pip install camel-tools)
 from g2p.diacritize_then_g2p import main
@@ -162,7 +169,7 @@ sentences judged correct (81.3%, 95% Wilson interval 74.3-86.8), Cohen's kappa 0
 
 The results of *Rule-Based Phonemization for Arabic Dialects: A Grapheme-to-Phoneme Framework* were produced with engine
 commit `c9fd7c0`, archived unchanged together with the human-evaluation judgments as release
-**v1.6.0**: https://doi.org/10.5281/zenodo.23979713. Later commits on `main` may change the
+**v1.6**: https://doi.org/10.5281/zenodo.23979713. Later commits on `main` may change the
 engine's output.
 
 ## Dataset download
@@ -207,10 +214,10 @@ If you use Ara-150 or AraForge in your research, please cite:
   note      = {In submission}
 }
 
-@software{basily2026g2p_v160,
+@software{basily2026g2p_v16,
   author    = {Robeir Basily and Cherif Salama and Mahmoud Khalil},
   title     = {{Ara-150-Pipeline}: AraForge pipeline and dialect-aware {A}rabic G2P engine},
-  version   = {1.6.0},
+  version   = {1.6},
   year      = {2026},
   publisher = {Zenodo},
   doi       = {10.5281/zenodo.23979713},
@@ -246,13 +253,13 @@ Takedown requests: open a GitHub issue or contact the corresponding author.
 
 ## Ethics
 
-- All speaker identities have been anonymized (SPK_NNN pseudonyms derived from
-  ECAPA-TDNN clustering). Real-world identities are not recoverable from the
-  released artifacts.
+- Speakers are identified in the corpus metadata only by pseudonymous codes
+  (SPK_NNN, derived from ECAPA-TDNN clustering).
 - The corpus is derived from publicly broadcast Arabic-language content
   (podcasts, lectures, talk shows, sermons).
-- No IRB review was required; annotators participated voluntarily with no
-  personal data collected.
+- Formal ethics-committee review was not sought for the human evaluation;
+  annotators participated voluntarily, gave informed consent, and their judgments
+  are released under anonymous annotator codes only.
 
 ---
 
