@@ -1,11 +1,13 @@
 """Emit the qualitative-comparison table rows (Table 3) directly from the engine.
 Both columns come from the same engine: the MSA ruleset and the dialect ruleset."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # also under python -I
 from arabic_g2p_rules import transcribe_protected as T
 
 MSA = "Modern Standard Arabic (MSA)"
 ROWS = [
     ("EGY", "Egyptian",         "الجو جميل",      "the weather is nice"),
-    ("EGY", "Egyptian",         "قال لي الجار",   "the neighbour told me"),
+    ("EGY", "Egyptian",         "قال لي الجار",   "the neighbor told me"),
     ("LEV", "Levantine Arabic", "شو القصة",       "what's the story"),
     ("LEV", "Levantine Arabic", "الجو حلو اليوم", "the weather is nice today"),
     ("GLF", "Khaliji Arabic",   "هذا الثوب",      "this is the garment"),

@@ -1,4 +1,6 @@
 """Test suite for the expert-revised Arabic G2P rules. Run: python3 test_rules.py"""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # also under python -I
 from arabic_g2p_rules import transcribe_protected, transcribe_arabic, get_rules, SUN_LETTERS, MOON_LETTERS
 
 def t(word, dialect, must_contain=None, must_equal=None, must_not_contain=None, diacritize=False):

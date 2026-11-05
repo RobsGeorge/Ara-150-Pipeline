@@ -21,7 +21,8 @@ Usage:
     python diacritize_then_g2p.py --input-csv transcripts.csv --output-csv ipa.csv \\
                                    --backend camel   # or mishkal | none
 """
-import argparse, sys, csv
+import argparse, sys, csv, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # also under python -I
 from arabic_g2p_rules import transcribe_protected
 
 def get_camel_diacritizer():
