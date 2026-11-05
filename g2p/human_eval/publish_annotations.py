@@ -7,7 +7,9 @@ Writes
                              (adjudicated) judgment and the error details;
   annotator_*.xlsx, G2P_human_evaluation_150.xlsx
                              the workbooks with the free-text note columns emptied and the
-                             file properties (author, last editor, dates) cleared.
+                             file properties (author, last editor, dates) cleared; in the
+                             adjudication workbook, the annotators' columns hold only the
+                             structured error details, and formula columns hold their values.
 Judgments and error details are copied unchanged. Free-text notes are not released.
 """
 import csv
@@ -59,6 +61,8 @@ wb = load_workbook(SRC / name)
 ws = wb["Annotation"]
 hdr = {ws.cell(1, c).value: ws.cell(1, c).column_letter for c in range(1, ws.max_column + 1)}
 assert hdr["A: Notes"] == "H" and hdr["B: Notes"] == "K" and hdr["Adjudication note"] == "T"
+assert hdr["Initial disagreement"] == "L" and hdr["Final: correct"] == "N"
+ws["H1"], ws["K1"] = "A: error details", "B: error details"
 rows = []
 for r in range(2, ws.max_row + 1):
     item = ws[f"B{r}"].value
@@ -73,6 +77,8 @@ for r in range(2, ws.max_row + 1):
     a, b, adj = ws[f"G{r}"].value, ws[f"J{r}"].value, clean(ws[f"M{r}"].value)
     final = adj if adj else ("Yes" if a == b == "OK" else "No" if a == b == "Not OK" else None)
     assert final in ("Yes", "No"), item
+    ws[f"L{r}"] = "Yes" if a != b else "No"                      # values instead of formulas
+    ws[f"N{r}"] = final
     rows.append([item, ws[f"S{r}"].value, ws[f"C{r}"].value, ws[f"D{r}"].value, ws[f"E{r}"].value, a, b,
                  "Yes" if a != b else "No", final] +
                 ([clean(ws[f"{c}{r}"].value) or "" for c in "OPQR"] if final == "No" else ["", "", "", ""]))
