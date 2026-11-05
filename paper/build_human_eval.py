@@ -21,6 +21,9 @@ OUT = Path(__file__).parent / "generated"
 DIALECTS = ["Egyptian", "Levantine", "Gulf"]
 # Items also drawn in a preliminary sample, before the last engine corrections (reported in Section 6.4).
 EARLIER_DRAW = {"EGY-028", "LEV-016", "LEV-020", "LEV-029", "LEV-043", "LEV-044", "LEV-048", "GLF-044"}
+# English glosses of the words that can be chosen as Table 6 examples
+GLOSS = {"بذلته": "I spent it", "التزاماتي": "my commitments", "شخصية": "character", "جراند": "Grant (name)",
+         "تنقذه": "she saves him", "التقاء": "meeting", "ولكن": "but", "الڨيديو": "the video"}
 ESHORT = {"Dialect consonant": "Cons", "Definite article": "Art", "Long vowel or lexical word": "Long",
           "Foreign name or loanword": "Loan", "Other": "Other"}
 TAG = {"Egyptian": "EGY", "Levantine": "LEV", "Gulf": "GLF"}
@@ -120,6 +123,11 @@ def main(path):
         m["HumanAnnotators"] = str(len(set().union(*(r["annotators"] for r in rows))) or "") if any(r["annotators"] for r in rows) else PH
         kt = kappa([(r["a"], r["b"]) for r in rows])
         m["HumanKappa"] = f"{kt:.2f}" if kt is not None else "n/a"
+        strict = sum(r["a"] == r["b"] == "Yes" for r in rows)
+        lenient = sum("Yes" in (r["a"], r["b"]) for r in rows)
+        m.update(HumanStrictN=str(strict), HumanStrictAcc=f"{100 * strict / len(rows):.1f}",
+                 HumanLenientN=str(lenient), HumanLenientAcc=f"{100 * lenient / len(rows):.1f}",
+                 HumanDisagreeYes=str(sum(r["a"] != r["b"] and r["final"] == "Yes" for r in rows)))
         rest = [r for r in rows if r["item"] not in EARLIER_DRAW]
         m.update(HumanEarlierN=str(len(rows) - len(rest)), HumanRestN=str(len(rest)),
                  HumanRestCorrect=str(sum(r["final"] == "Yes" for r in rest)),
@@ -144,7 +152,8 @@ def main(path):
                 best = max(DIALECTS, key=lambda d: (sum(r["dialect"] == d for r in cand), -order[d])) if cand else None
                 ex = next((r for r in cand if r["dialect"] == best), None)
                 if ex:
-                    t6.append(f"{ERROR_LABEL[e]} & {TAG[ex['dialect']]} & \\AR{{{ex['word']}}} & \\ipa{{{esc(ex['wrong'])}}} & \\ipa{{{esc(ex['right'])}}} \\\\")
+                    gloss = f" ``{GLOSS[ex['word']]}''" if ex["word"] in GLOSS else ""
+                    t6.append(f"{ERROR_LABEL[e]} & {TAG[ex['dialect']]} & \\AR{{{ex['word']}}}{gloss} & \\ipa{{{esc(ex['wrong'])}}} & \\ipa{{{esc(ex['right'])}}} \\\\")
         ec = ["\\begin{itemize}"] + items + ["\\end{itemize}"] if items else ["No errors were found."]
     else:
         for d in DIALECTS:
@@ -155,7 +164,8 @@ def main(path):
                  HumanAgree=PH, HumanAgreeN=PH, HumanWords=PH, HumanWordsCorrect=PH, HumanWordAcc=PH, HumanErrors=PH, HumanKappa=PH)
         t5 += ["\\midrule", f"Overall & 150 & {PH} & {PH} & {PH} \\\\"]
         t6 = [f"{PH} & & & & \\\\"]
-        m.update(HumanEarlierN=PH, HumanRestN=PH, HumanRestCorrect=PH, HumanRestAcc=PH)
+        m.update(HumanEarlierN=PH, HumanRestN=PH, HumanRestCorrect=PH, HumanRestAcc=PH, HumanStrictN=PH,
+                 HumanStrictAcc=PH, HumanLenientN=PH, HumanLenientAcc=PH, HumanDisagreeYes=PH)
         for d in DIALECTS:
             m[f"HumanErrors{TAG[d]}"] = PH
             for short in ESHORT.values():

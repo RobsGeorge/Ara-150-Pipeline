@@ -30,6 +30,7 @@ ORDER = ["EGY", "LEV", "GLF", "MSA"]
 NAME = {"EGY": "Egyptian", "LEV": "Levantine", "GLF": "Gulf", "MSA": "MSA"}
 CSV_DIALECT = {"Egyptian": "EGY", "Levantine": "LEV", "Khaliji": "GLF", "MSA": "MSA"}
 fmt = lambda n: f"{int(n):,}"
+pct1 = lambda x: f"{float(x):.1f}"            # one decimal, as in the rest of the paper
 macros = {}
 
 # ---------------------------------------------------------------- evaluation CSV
@@ -81,9 +82,9 @@ with open(OUT / "table2_rows.tex", "w", encoding="utf-8") as f:
         for k, r in (("mk", mk), ("sun", sun), ("moon", moon)):
             tot[k][0] += int(r["Correct"]); tot[k][1] += int(r["Applicable"])
         tot["oos"] += oos
-        f.write(f"{NAME[d]} & {fmt(nonempty[d])} & {fmt(mk['Correct'])}/{fmt(mk['Applicable'])} & {mk['Accuracy (%)']} & "
-                f"{fmt(sun['Correct'])}/{fmt(sun['Applicable'])} & {sun['Accuracy (%)']} & "
-                f"{fmt(moon['Correct'])}/{fmt(moon['Applicable'])} & {moon['Accuracy (%)']} & {fmt(oos)} \\\\\n")
+        f.write(f"{NAME[d]} & {fmt(nonempty[d])} & {fmt(mk['Correct'])}/{fmt(mk['Applicable'])} & {pct1(mk['Accuracy (%)'])} & "
+                f"{fmt(sun['Correct'])}/{fmt(sun['Applicable'])} & {pct1(sun['Accuracy (%)'])} & "
+                f"{fmt(moon['Correct'])}/{fmt(moon['Applicable'])} & {pct1(moon['Accuracy (%)'])} & {fmt(oos)} \\\\\n")
 
 # ---------------------------------------------------------------- Table A3 (per marker)
 LNAME = {"ج": "Jīm", "ث": "Thāʾ", "ذ": "Dhāl", "ظ": "Ẓāʾ", "ق": "Qāf"}
@@ -93,7 +94,7 @@ with open(OUT / "tableA3_rows.tex", "w", encoding="utf-8") as f:
         for k, r in enumerate(mrows):
             g, ph = r["Item"].split(" -> ")
             lead = f"\\multirow{{{len(mrows)}}}{{*}}{{{NAME[d]}}}" if k == 0 else ""
-            f.write(f"{lead} & {LNAME[g]} (\\AR{{{g}}}) & \\ipa{{{ph}}} & {fmt(r['Correct'])} & {fmt(r['Applicable'])} & {r['Accuracy (%)']} \\\\\n")
+            f.write(f"{lead} & {LNAME[g]} (\\AR{{{g}}}) & \\ipa{{{ph}}} & {fmt(r['Correct'])} & {fmt(r['Applicable'])} & {pct1(r['Accuracy (%)'])} \\\\\n")
         f.write("\\midrule\n" if d != ORDER[-1] else "")
 
 # ---------------------------------------------------------------- Table 4 (qualitative)
